@@ -99,6 +99,9 @@ public class home extends Fragment implements Updatable{
         currentTemp.setText(String.valueOf(weatherData.getCurrently().getTemperature() + "\u00b0"));
         currentCondition.setText(weatherData.getCurrently().getSummary());
         final int size = 300;
+        String precip = weatherData.getCurrently().getPrecipProbabilty() + "% " + weatherData.getCurrently().getPrecipType();
+        precipitation.setText(precip);
+        final int size = 250;
         //updating hourly weather
         for (int i = 0; i < 12; i ++){
 
