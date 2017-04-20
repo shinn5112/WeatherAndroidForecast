@@ -116,8 +116,8 @@ public class home extends Fragment implements Updatable{
             String time = hour[0] + ":" + hour[1] + " " + date[4];
             String hourPrecip = currentData.getPrecipProbabilty() + "% " + weatherData.getCurrently().getPrecipType();
             String hourIcon = currentData.getIcon();
-            icon = icon.replaceAll("-", "_");
-            int hourResID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
+            hourIcon = hourIcon.replaceAll("-", "_");
+            int hourResID = getResources().getIdentifier(hourIcon , "drawable", getActivity().getPackageName());
 
 
             // style shit
@@ -134,7 +134,7 @@ public class home extends Fragment implements Updatable{
             currentRow[2].setText(hourPrecip);
             hourlyIcons[i].getLayoutParams().height = 125;
             hourlyIcons[i].getLayoutParams().width = 125;
-            hourlyIcons[i].setImageResource(resID);
+            hourlyIcons[i].setImageResource(hourResID);
         }
 
 
