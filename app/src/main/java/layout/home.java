@@ -104,20 +104,10 @@ public class home extends Fragment implements Updatable{
             TextView[] currentRow = hourlyViews[i]; // get the matching text view
             DataPoint currentData = weatherData.getHourly().getHour(i);
             // set the text values
-            StringBuilder sb = new StringBuilder(currentData.getTime());
-            sb.delete(0, sb.length() - 17);
-            sb.delete(sb.length() - 12, sb.length());
-            /*
-            DateFormat dateFormat = new SimpleDateFormat("hh:mm");
-            Date newTime = null;
-            try {
-                newTime = dateFormat.parse(sb.toString());
-                System.out.println(dateFormat);
-                System.out.println(new SimpleDateFormat("hh:mm a").format(newTime));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }*/
-            currentRow[0].setText(sb);
+            String[] date = currentData.getTime().split(" ");
+            String[] hour = date[3].split(":");
+            String time = hour[0] + ":" + hour[1] + " " + date[4];
+            currentRow[0].setText(time);
             currentRow[1].setText(currentData.getSummary()); //// TODO: 4/18/17 format this and add additional data
         }
 
