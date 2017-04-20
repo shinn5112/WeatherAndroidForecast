@@ -50,7 +50,7 @@ public class DataPoint {
         try{
             tempData = data.getString("precipType");
         }catch (Exception e){
-            tempData = null;
+            tempData = "";
         }
         return tempData;
     }

@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         try {
             weatherData = new WeatherData(sharedPreferences.getString("weatherData", ""));
-            System.out.println(weatherData.getCurrently().getSummary());
+            //System.out.println(weatherData.getCurrently().getSummary());
         }catch (JSONException e){
 
             e.getMessage();
