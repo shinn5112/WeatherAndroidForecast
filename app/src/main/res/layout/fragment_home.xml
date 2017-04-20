@@ -15,8 +15,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintVertical_bias="1.0">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,6 +32,16 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/highLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="highLow"
+                app:layout_constraintLeft_toRightOf="@+id/currentImageView"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="14dp"
+                app:layout_constraintTop_toBottomOf="@+id/currentTemp" />
 
             <TextView
                 android:id="@+id/precipitation"
@@ -50,7 +60,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="0dp"
-                android:layout_marginTop="154dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="179dp"
                 android:layout_weight="1"
                 app:layout_constraintLeft_toRightOf="@+id/precipitation"
                 app:layout_constraintTop_toTopOf="parent"
@@ -61,21 +72,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="14dp"
                 android:text="condition"
                 app:layout_constraintLeft_toRightOf="@+id/currentImageView"
-                app:layout_constraintTop_toBottomOf="@+id/currentTemp" />
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="14dp"
+                app:layout_constraintTop_toBottomOf="@+id/highLow" />
 
             <TextView
                 android:id="@+id/currentTemp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="105dp"
+                android:layout_height="44dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="83dp"
+                android:layout_marginTop="50dp"
                 android:text="temp"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:textSize="36sp"
+                android:gravity="bottom|left"
                 app:layout_constraintLeft_toRightOf="@+id/currentImageView"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteY="50dp" />
 
             <TextView
                 android:id="@+id/textView3"

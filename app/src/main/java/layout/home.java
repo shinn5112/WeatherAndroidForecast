@@ -27,7 +27,7 @@ import WeatherAPI.WeatherData;
  */
 public class home extends Fragment implements Updatable{
 
-    private TextView currentTemp, currentCondition, precipitation;
+    private TextView currentTemp, currentCondition, precipitation, highLow;
     private TextView[][] hourlyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.
     private ImageView[] hourlyImages = new ImageView[12];
     private ImageView[] hourlyIcons = new ImageView[12];
@@ -50,6 +50,7 @@ public class home extends Fragment implements Updatable{
         currentTemp= (TextView) view.findViewById(R.id.currentTemp);
         currentCondition = (TextView) view.findViewById(R.id.currentCondition);
         precipitation = (TextView) view.findViewById(R.id.precipitation);
+        highLow = (TextView) view.findViewById(R.id.highLow);
         conditionImage = (ImageView) view.findViewById(R.id.currentImageView);
         precipIcon = (ImageView) view.findViewById(R.id.precipIcon);
 
@@ -110,6 +111,8 @@ public class home extends Fragment implements Updatable{
         // applying weather info
         currentTemp.setText(String.valueOf(weatherData.getCurrently().getTemperature() + "\u00b0"));
         currentCondition.setText(weatherData.getCurrently().getSummary());
+        String highLowTemp = weatherData.getDaily().getDay(0).getTemperatureMax() + "\u00b0" + "/" + weatherData.getDaily().getDay(0).getTemperatureMin() + "\u00b0";
+        highLow.setText(highLowTemp);
         final int size = 300;
         String precip = weatherData.getCurrently().getPrecipProbabilty() + "%";
         precipitation.setText(precip);
@@ -138,7 +141,6 @@ public class home extends Fragment implements Updatable{
             hourIcon = hourIcon.replaceAll("-", "_");
             int hourResID = getResources().getIdentifier(hourIcon , "drawable", getActivity().getPackageName());
             String precipIcon = "ic_" + currentData.getPrecipType();
-            System.out.println("precit type: " + currentData.getPrecipType());
             int precipResID = getResources().getIdentifier(precipIcon , "drawable", getActivity().getPackageName());
 
             // style shit
