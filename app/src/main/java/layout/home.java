@@ -17,6 +17,7 @@ import net.weatheraf.weatherandroidforecast.R;
 import org.json.JSONException;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -110,11 +111,15 @@ public class home extends Fragment implements Updatable{
 
             TextView[] currentRow = hourlyViews[i]; // get the matching text view
             DataPoint currentData = weatherData.getHourly().getHour(i);
+            System.out.println(currentData);
             // set the text values
             String[] date = currentData.getTime().split(" ");
             String[] hour = date[3].split(":");
             String time = hour[0] + ":" + hour[1] + " " + date[4];
-            String hourPrecip = currentData.getPrecipProbabilty() + "% " + weatherData.getCurrently().getPrecipType();
+            double precipProbability = currentData.getPrecipProbabilty();
+            precipProbability *= 100;
+            DecimalFormat df = new DecimalFormat("##");
+            String hourPrecip =  df.format(precipProbability) + "% " + currentData.getPrecipType();
             String hourIcon = currentData.getIcon();
             hourIcon = hourIcon.replaceAll("-", "_");
             int hourResID = getResources().getIdentifier(hourIcon , "drawable", getActivity().getPackageName());

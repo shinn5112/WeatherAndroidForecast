@@ -41,8 +41,8 @@ public class DataPoint {
         return data.getDouble("precipIntensityError");
     }
 
-    public int getPrecipProbabilty() throws  JSONException{
-        return data.getInt("precipProbability");
+    public double getPrecipProbabilty() throws  JSONException{
+        return data.getDouble("precipProbability");
     }
 
     public String getPrecipType() throws JSONException{
