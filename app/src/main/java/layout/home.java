@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,7 +98,7 @@ public class home extends Fragment implements Updatable{
         // applying weather info
         currentTemp.setText(String.valueOf(weatherData.getCurrently().getTemperature() + "\u00b0"));
         currentCondition.setText(weatherData.getCurrently().getSummary());
-        final int size = 250;
+        final int size = 300;
         //updating hourly weather
         for (int i = 0; i < 12; i ++){
 
@@ -107,8 +108,16 @@ public class home extends Fragment implements Updatable{
             String[] date = currentData.getTime().split(" ");
             String[] hour = date[3].split(":");
             String time = hour[0] + ":" + hour[1] + " " + date[4];
+
+            // style shit
             currentRow[0].setWidth(size);
+            currentRow[0].setGravity(Gravity.CENTER);
             currentRow[1].setWidth(size);
+            currentRow[1].setGravity(Gravity.CENTER);
+            currentRow[2].setWidth(size);
+            currentRow[2].setGravity(Gravity.CENTER);
+
+            // text setting
             currentRow[0].setText(time);
             currentRow[1].setText(currentData.getSummary()); //// TODO: 4/18/17 format this and add additional data
         }
