@@ -101,6 +101,10 @@ public class home extends Fragment implements Updatable{
         final int size = 300;
         String precip = weatherData.getCurrently().getPrecipProbabilty() + "% " + weatherData.getCurrently().getPrecipType();
         precipitation.setText(precip);
+        String icon = weatherData.getCurrently().getIcon();
+        icon = icon.replaceAll("-", "_");
+        int resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
+        conditionImage.setImageResource(resID);
         //updating hourly weather
         for (int i = 0; i < 12; i ++){
 
@@ -110,6 +114,7 @@ public class home extends Fragment implements Updatable{
             String[] date = currentData.getTime().split(" ");
             String[] hour = date[3].split(":");
             String time = hour[0] + ":" + hour[1] + " " + date[4];
+            String hourPrecip = currentData.getPrecipProbabilty() + "% " + weatherData.getCurrently().getPrecipType();
 
             // style shit
             currentRow[0].setWidth(size);
@@ -122,6 +127,7 @@ public class home extends Fragment implements Updatable{
             // text setting
             currentRow[0].setText(time);
             currentRow[1].setText(currentData.getSummary()); //// TODO: 4/18/17 format this and add additional data
+            currentRow[2].setText(hourPrecip);
         }
 
 
