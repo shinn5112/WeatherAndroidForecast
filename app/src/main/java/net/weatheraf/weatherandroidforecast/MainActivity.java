@@ -1,5 +1,6 @@
 package net.weatheraf.weatherandroidforecast;
 
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import android.zetterstrom.com.forecast.models.Forecast;
 
 import com.google.gson.Gson;
 
+import layout.home;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String API_KEY = "43b285af3fdc21e9db38a2c02383d78c";
     private Forecast weatherData;
+    private FragmentManager fragmentManager = getFragmentManager();
     private static SharedPreferences sharedPreferences;
 
     @Override
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
         getWeatherData();
 
+        // showing home fragment
+        fragmentManager.beginTransaction().replace(R.id.main, new home()).commit();
     }
 
     private void getWeatherData(){
