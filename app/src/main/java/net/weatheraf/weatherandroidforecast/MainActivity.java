@@ -1,5 +1,6 @@
 package net.weatheraf.weatherandroidforecast;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,34 +13,107 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+import android.zetterstrom.com.forecast.ForecastClient;
+import android.zetterstrom.com.forecast.ForecastConfiguration;
+import android.zetterstrom.com.forecast.models.Forecast;
+
+import com.google.gson.Gson;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String API_KEY = "43b285af3fdc21e9db38a2c02383d78c";
+    private Forecast weatherData;
+    private static SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // nav drawer stuff
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // setup
+        sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
+        getWeatherData();
+
+    }
+
+    private void getWeatherData(){
+        // setting up the API
+        ForecastConfiguration configuration =
+                new ForecastConfiguration.Builder(API_KEY)
+                        .setCacheDirectory(getCacheDir())
+                        .build();
+        ForecastClient.create(configuration);
+
+        //getting the forecast
+        double latitude = 40.2712;
+        double longitude = -74.7829;
+        ForecastClient.getInstance()
+                .getForecast(latitude, longitude, new Callback<Forecast>() {
+                    @Override
+                    public void onResponse(Call<Forecast> forecastCall, Response<Forecast> response) {
+                        if (response.isSuccessful()) {
+                            weatherData = response.body();
+                            insertWeatherData();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Forecast> forecastCall, Throwable t) {
+
+                    }
+                });
+
+    }
+
+    private void insertWeatherData(){
+        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(weatherData);
+        // // TODO: 4/19/17 Remove debug
+        System.out.println(json);
+        prefsEditor.putString("weatherData", json);
+        prefsEditor.apply();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("weatherData", "");
+        // // TODO: 4/19/17 Remove debug
+        System.out.println(json);
+        this.weatherData= gson.fromJson(json, Forecast.class);
+        try{
+            // // TODO: 4/19/17 Remove print for debug
+            System.out.println(weatherData.getCurrently().getSummary());
+        }catch (NullPointerException e){
+            getWeatherData();
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        insertWeatherData();
     }
 
     @Override
