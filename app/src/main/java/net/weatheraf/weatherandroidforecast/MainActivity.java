@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         // setup
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
         getWeatherData();
+        getSupportActionBar().setTitle("Current City");
 
         // showing home fragment
         fragmentManager.beginTransaction().replace(R.id.main, new home()).commit();
