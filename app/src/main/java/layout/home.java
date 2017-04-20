@@ -97,7 +97,7 @@ public class home extends Fragment implements Updatable{
         // applying weather info
         currentTemp.setText(String.valueOf(weatherData.getCurrently().getTemperature() + "\u00b0"));
         currentCondition.setText(weatherData.getCurrently().getSummary());
-
+        final int size = 250;
         //updating hourly weather
         for (int i = 0; i < 12; i ++){
 
@@ -107,6 +107,8 @@ public class home extends Fragment implements Updatable{
             String[] date = currentData.getTime().split(" ");
             String[] hour = date[3].split(":");
             String time = hour[0] + ":" + hour[1] + " " + date[4];
+            currentRow[0].setWidth(size);
+            currentRow[1].setWidth(size);
             currentRow[0].setText(time);
             currentRow[1].setText(currentData.getSummary()); //// TODO: 4/18/17 format this and add additional data
         }

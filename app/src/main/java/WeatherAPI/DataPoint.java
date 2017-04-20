@@ -46,7 +46,13 @@ public class DataPoint {
     }
 
     public String getPrecipType() throws JSONException{
-        return data.getString("precipType");
+        String tempData;
+        try{
+            tempData = data.getString("precipType");
+        }catch (Exception e){
+            tempData = null;
+        }
+        return tempData;
     }
 
     public double getTemperature() throws JSONException{
