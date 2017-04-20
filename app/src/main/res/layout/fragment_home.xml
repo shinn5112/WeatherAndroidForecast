@@ -40,9 +40,21 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="14dp"
-                android:text="high/low"
+                android:text="precipitation"
                 app:layout_constraintLeft_toRightOf="@+id/currentImageView"
                 app:layout_constraintTop_toBottomOf="@+id/currentCondition" />
+
+            <ImageView
+                android:id="@+id/precipIcon"
+                style="@style/HourlyElements"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="154dp"
+                android:layout_weight="1"
+                app:layout_constraintLeft_toRightOf="@+id/precipitation"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_home" />
 
             <TextView
                 android:id="@+id/currentCondition"
@@ -144,6 +156,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon0"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -190,6 +210,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon1"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -236,6 +264,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon2"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
                 e
@@ -283,6 +319,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon3"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -329,6 +373,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon4"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -375,6 +427,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon5"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -421,6 +481,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon6"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -467,6 +535,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon7"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -513,6 +589,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon8"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -559,6 +643,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon9"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -605,6 +697,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon10"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 
@@ -651,6 +751,14 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="TextView" />
+
+                        <ImageView
+                            android:id="@+id/icon11"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
                     </LinearLayout>
                 </TableRow>
 

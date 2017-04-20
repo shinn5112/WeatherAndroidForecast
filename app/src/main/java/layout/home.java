@@ -16,11 +16,7 @@ import net.weatheraf.weatherandroidforecast.R;
 
 import org.json.JSONException;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import WeatherAPI.DataPoint;
 import WeatherAPI.WeatherData;
@@ -33,8 +29,9 @@ public class home extends Fragment implements Updatable{
 
     private TextView currentTemp, currentCondition, precipitation;
     private TextView[][] hourlyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.
+    private ImageView[] hourlyImages = new ImageView[12];
     private ImageView[] hourlyIcons = new ImageView[12];
-    private ImageView conditionImage;
+    private ImageView conditionImage, precipIcon;
     private WeatherData weatherData;
 
     public home() {
@@ -54,6 +51,7 @@ public class home extends Fragment implements Updatable{
         currentCondition = (TextView) view.findViewById(R.id.currentCondition);
         precipitation = (TextView) view.findViewById(R.id.precipitation);
         conditionImage = (ImageView) view.findViewById(R.id.currentImageView);
+        precipIcon = (ImageView) view.findViewById(R.id.precipIcon);
 
         // setting up hourly forecast stuff
         hourlyViews[0] = new TextView[]{(TextView)view.findViewById(R.id.time0), (TextView)view.findViewById(R.id.summary0), (TextView)view.findViewById(R.id.precipitation0)};
@@ -69,18 +67,31 @@ public class home extends Fragment implements Updatable{
         hourlyViews[10] = new TextView[]{(TextView)view.findViewById(R.id.time10), (TextView)view.findViewById(R.id.summary10), (TextView)view.findViewById(R.id.precipitation10)};
         hourlyViews[11] = new TextView[]{(TextView)view.findViewById(R.id.time11), (TextView)view.findViewById(R.id.summary11), (TextView)view.findViewById(R.id.precipitation11)};
 
-        hourlyIcons[0] = (ImageView)view.findViewById(R.id.image0);
-        hourlyIcons[1] = (ImageView)view.findViewById(R.id.image1);
-        hourlyIcons[2] = (ImageView)view.findViewById(R.id.image2);
-        hourlyIcons[3] = (ImageView)view.findViewById(R.id.image3);
-        hourlyIcons[4] = (ImageView)view.findViewById(R.id.image4);
-        hourlyIcons[5] = (ImageView)view.findViewById(R.id.image5);
-        hourlyIcons[6] = (ImageView)view.findViewById(R.id.image6);
-        hourlyIcons[7] = (ImageView)view.findViewById(R.id.image7);
-        hourlyIcons[8] = (ImageView)view.findViewById(R.id.image8);
-        hourlyIcons[9] = (ImageView)view.findViewById(R.id.image9);
-        hourlyIcons[10] = (ImageView)view.findViewById(R.id.image10);
-        hourlyIcons[11] = (ImageView)view.findViewById(R.id.image11);
+        hourlyImages[0] = (ImageView)view.findViewById(R.id.image0);
+        hourlyImages[1] = (ImageView)view.findViewById(R.id.image1);
+        hourlyImages[2] = (ImageView)view.findViewById(R.id.image2);
+        hourlyImages[3] = (ImageView)view.findViewById(R.id.image3);
+        hourlyImages[4] = (ImageView)view.findViewById(R.id.image4);
+        hourlyImages[5] = (ImageView)view.findViewById(R.id.image5);
+        hourlyImages[6] = (ImageView)view.findViewById(R.id.image6);
+        hourlyImages[7] = (ImageView)view.findViewById(R.id.image7);
+        hourlyImages[8] = (ImageView)view.findViewById(R.id.image8);
+        hourlyImages[9] = (ImageView)view.findViewById(R.id.image9);
+        hourlyImages[10] = (ImageView)view.findViewById(R.id.image10);
+        hourlyImages[11] = (ImageView)view.findViewById(R.id.image11);
+
+        hourlyIcons[0] = (ImageView)view.findViewById(R.id.icon0);
+        hourlyIcons[1] = (ImageView)view.findViewById(R.id.icon1);
+        hourlyIcons[2] = (ImageView)view.findViewById(R.id.icon2);
+        hourlyIcons[3] = (ImageView)view.findViewById(R.id.icon3);
+        hourlyIcons[4] = (ImageView)view.findViewById(R.id.icon4);
+        hourlyIcons[5] = (ImageView)view.findViewById(R.id.icon5);
+        hourlyIcons[6] = (ImageView)view.findViewById(R.id.icon6);
+        hourlyIcons[7] = (ImageView)view.findViewById(R.id.icon7);
+        hourlyIcons[8] = (ImageView)view.findViewById(R.id.icon8);
+        hourlyIcons[9] = (ImageView)view.findViewById(R.id.icon9);
+        hourlyIcons[10] = (ImageView)view.findViewById(R.id.icon10);
+        hourlyIcons[11] = (ImageView)view.findViewById(R.id.icon11);
 
         //Getting darkSky data
         try {
@@ -100,18 +111,21 @@ public class home extends Fragment implements Updatable{
         currentTemp.setText(String.valueOf(weatherData.getCurrently().getTemperature() + "\u00b0"));
         currentCondition.setText(weatherData.getCurrently().getSummary());
         final int size = 300;
-        String precip = weatherData.getCurrently().getPrecipProbabilty() + "% " + weatherData.getCurrently().getPrecipType();
+        String precip = weatherData.getCurrently().getPrecipProbabilty() + "%";
         precipitation.setText(precip);
         String icon = weatherData.getCurrently().getIcon();
         icon = icon.replaceAll("-", "_");
         int resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
         conditionImage.setImageResource(resID);
+        icon = weatherData.getCurrently().getPrecipType();
+        resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
+        precipIcon.setImageResource(resID);
+
         //updating hourly weather
         for (int i = 0; i < 12; i ++){
 
             TextView[] currentRow = hourlyViews[i]; // get the matching text view
             DataPoint currentData = weatherData.getHourly().getHour(i);
-            System.out.println(currentData);
             // set the text values
             String[] date = currentData.getTime().split(" ");
             String[] hour = date[3].split(":");
@@ -119,11 +133,13 @@ public class home extends Fragment implements Updatable{
             double precipProbability = currentData.getPrecipProbabilty();
             precipProbability *= 100;
             DecimalFormat df = new DecimalFormat("##");
-            String hourPrecip =  df.format(precipProbability) + "% " + currentData.getPrecipType();
+            String hourPrecip =  df.format(precipProbability) + "% ";
             String hourIcon = currentData.getIcon();
             hourIcon = hourIcon.replaceAll("-", "_");
             int hourResID = getResources().getIdentifier(hourIcon , "drawable", getActivity().getPackageName());
-
+            String precipIcon = "ic_" + currentData.getPrecipType();
+            System.out.println("precit type: " + currentData.getPrecipType());
+            int precipResID = getResources().getIdentifier(precipIcon , "drawable", getActivity().getPackageName());
 
             // style shit
             currentRow[0].setWidth(size);
@@ -137,9 +153,10 @@ public class home extends Fragment implements Updatable{
             currentRow[0].setText(time);
             currentRow[1].setText(currentData.getSummary()); //// TODO: 4/18/17 format this and add additional data
             currentRow[2].setText(hourPrecip);
-            hourlyIcons[i].getLayoutParams().height = 125;
-            hourlyIcons[i].getLayoutParams().width = 125;
-            hourlyIcons[i].setImageResource(hourResID);
+            hourlyImages[i].getLayoutParams().height = 125;
+            hourlyImages[i].getLayoutParams().width = 125;
+            hourlyImages[i].setImageResource(hourResID);
+            hourlyIcons[i].setImageResource(precipResID);
         }
 
 
