@@ -10,14 +10,19 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.system.ErrnoException;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import android.zetterstrom.com.forecast.ForecastClient;
 import android.zetterstrom.com.forecast.ForecastConfiguration;
 import android.zetterstrom.com.forecast.models.Forecast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+
+import WeatherAPI.WeatherData;
 import layout.Updatable;
 import layout.astronomical;
 import layout.forecast;
@@ -31,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String API_KEY = "43b285af3fdc21e9db38a2c02383d78c";
-    private Forecast weatherData;
+    private WeatherData weatherData;
     private FragmentManager fragmentManager = getFragmentManager();
     private static SharedPreferences sharedPreferences;
 
@@ -76,13 +81,19 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onResponse(Call<Forecast> forecastCall, Response<Forecast> response) {
                         if (response.isSuccessful()) {
-                            weatherData = response.body();
-                            insertWeatherData();
+                            try {
+                                Gson gson = new Gson();
+                                weatherData = new WeatherData(gson.toJson(response.body()));
+                                insertWeatherData();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<Forecast> forecastCall, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Check network connection", Toast.LENGTH_LONG).show();
 
                     }
                 });
@@ -91,29 +102,24 @@ public class MainActivity extends AppCompatActivity
 
     private void insertWeatherData(){
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(weatherData);
+       
         // // TODO: 4/19/17 Remove debug
-        System.out.println(json);
-        prefsEditor.putString("weatherData", json);
+        System.out.println("On insert\n"+weatherData.getJson());
+        prefsEditor.putString("weatherData", weatherData.getJson());
         prefsEditor.apply();
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("weatherData", "");
-        // // TODO: 4/19/17 Remove debug
-        System.out.println(json);
-        this.weatherData= gson.fromJson(json, Forecast.class);
-        try{
-            // // TODO: 4/19/17 Remove print for debug
+        try {
+            weatherData = new WeatherData(sharedPreferences.getString("weatherData", ""));
             System.out.println(weatherData.getCurrently().getSummary());
-        }catch (NullPointerException e){
-            getWeatherData();
-            e.printStackTrace();
+        }catch (JSONException e){
+
+            e.getMessage();
         }
+        //// TODO: 4/20/17 remove debug
     }
 
     @Override
@@ -153,7 +159,11 @@ public class MainActivity extends AppCompatActivity
             getWeatherData();
             Fragment fragment = getFragmentManager().findFragmentById(R.id.main);
             if ( fragment instanceof Updatable){
-                ((Updatable) fragment).updateWeather();
+                try {
+                    ((Updatable) fragment).updateWeather();
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
             }
         }
 

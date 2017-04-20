@@ -9,20 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.zetterstrom.com.forecast.models.DataPoint;
 
-import com.google.gson.Gson;
 
 import net.weatheraf.weatherandroidforecast.R;
 
-import org.json.JSONObject;
+import org.json.JSONException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
+import WeatherAPI.DataPoint;
+import WeatherAPI.WeatherData;
 
 
 /**
@@ -34,6 +33,7 @@ public class home extends Fragment implements Updatable{
     private TextView[][] hourlyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.
     private ImageView[] hourlyIcons = new ImageView[12];
     private ImageView conditionImage;
+    private WeatherData weatherData;
 
     public home() {
         // Required empty public constructor
@@ -81,37 +81,33 @@ public class home extends Fragment implements Updatable{
         hourlyIcons[11] = (ImageView)view.findViewById(R.id.image11);
 
         //Getting darkSky data
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString("weatherData", "");
+        try {
+            weatherData = new WeatherData(sharedPreferences.getString("weatherData", ""));
+            updateWeather();
+        }catch (JSONException e){
 
-        updateWeather();
+            e.getMessage();
+        }
 
         return view;
 
     }
 
-    public void updateWeather(){/*
+    public void updateWeather()throws JSONException{
         // applying weather info
         currentTemp.setText(String.valueOf(weatherData.getCurrently().getTemperature() + "\u00b0"));
         currentCondition.setText(weatherData.getCurrently().getSummary());
 
-        // precipitation value
-        String rain = weatherData.getCurrently().getPrecipType();
-        if (rain == null) rain = "0%";
-        rain += " rain";
-        precipitation.setText(rain);
-
         //updating hourly weather
-        List hourlyData = weatherData.getHourly().getData();
         for (int i = 0; i < 12; i ++){
-            TextView[] currentRow = hourlyViews[i]; // get the matching text view
-            DataPoint currentData = (DataPoint)hourlyData.get(i);
 
+            TextView[] currentRow = hourlyViews[i]; // get the matching text view
+            DataPoint currentData = weatherData.getHourly().getHour(i);
             // set the text values
-            java.util.Date time = new java.util.Date(currentData.getTime() * 1000);
-            StringBuilder sb = new StringBuilder(time.toString());
+            StringBuilder sb = new StringBuilder(currentData.getTime());
             sb.delete(0, sb.length() - 17);
             sb.delete(sb.length() - 12, sb.length());
+            /*
             DateFormat dateFormat = new SimpleDateFormat("hh:mm");
             Date newTime = null;
             try {
@@ -120,13 +116,12 @@ public class home extends Fragment implements Updatable{
                 System.out.println(new SimpleDateFormat("hh:mm a").format(newTime));
             } catch (ParseException e) {
                 e.printStackTrace();
-            }
-            currentRow[0].setText(new SimpleDateFormat("hh:mm a").format(newTime));
+            }*/
+            currentRow[0].setText(sb);
             currentRow[1].setText(currentData.getSummary()); //// TODO: 4/18/17 format this and add additional data
-
         }
 
-*/
+
     }
 
 }
