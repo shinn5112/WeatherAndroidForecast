@@ -1,11 +1,9 @@
 package net.weatheraf.weatherandroidforecast;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,14 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 import android.zetterstrom.com.forecast.ForecastClient;
 import android.zetterstrom.com.forecast.ForecastConfiguration;
 import android.zetterstrom.com.forecast.models.Forecast;
 
 import com.google.gson.Gson;
 
+import layout.Updatable;
+import layout.astronomical;
+import layout.forecast;
 import layout.home;
+import layout.settings;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -147,7 +148,13 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+
+            //refresh
+            getWeatherData();
+            Fragment fragment = getFragmentManager().findFragmentById(R.id.main);
+            if ( fragment instanceof Updatable){
+                ((Updatable) fragment).updateWeather();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -157,20 +164,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (item.getItemId()){
+            case R.id.nav_home :
+                fragmentManager.beginTransaction().replace(R.id.main, new home()).commit();
+                break;
+            case R.id.nav_forecast :
+                fragmentManager.beginTransaction().replace(R.id.main, new forecast()).commit();
+                break;
+            case R.id.nav_astronomical :
+                fragmentManager.beginTransaction().replace(R.id.main, new astronomical()).commit();
+                break;
+            case R.id.nav_settings :
+                fragmentManager.beginTransaction().replace(R.id.main, new settings()).commit();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
