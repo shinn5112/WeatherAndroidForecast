@@ -132,6 +132,8 @@ public class home extends Fragment implements Updatable{
             currentRow[0].setText(time);
             currentRow[1].setText(currentData.getSummary()); //// TODO: 4/18/17 format this and add additional data
             currentRow[2].setText(hourPrecip);
+            hourlyIcons[i].getLayoutParams().height = 125;
+            hourlyIcons[i].getLayoutParams().width = 125;
             hourlyIcons[i].setImageResource(resID);
         }
 
