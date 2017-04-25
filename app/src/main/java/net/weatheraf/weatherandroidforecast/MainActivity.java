@@ -4,13 +4,13 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.system.ErrnoException;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 
 import WeatherAPI.WeatherData;
-import layout.Updatable;
 import layout.astronomical;
 import layout.forecast;
 import layout.home;
@@ -61,14 +60,12 @@ public class MainActivity extends AppCompatActivity
 
         // setup
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
-        getWeatherData();
+        getWeatherData(new home());
         getSupportActionBar().setTitle("Huntington, WV");
 
-        // showing home fragment
-        fragmentManager.beginTransaction().replace(R.id.main, new home()).commit();
     }
 
-    private void getWeatherData(){
+    private void getWeatherData(final Fragment fragment){
         // setting up the API
         ForecastConfiguration configuration =
                 new ForecastConfiguration.Builder(API_KEY)
@@ -88,8 +85,10 @@ public class MainActivity extends AppCompatActivity
                                 Gson gson = new Gson();
                                 weatherData = new WeatherData(gson.toJson(response.body()));
                                 insertWeatherData();
+                                fragmentManager.beginTransaction().replace(R.id.main, fragment).commit();
                             }catch (Exception e){
                                 e.printStackTrace();
+                                setup();
                             }
                         }
                     }
@@ -112,13 +111,16 @@ public class MainActivity extends AppCompatActivity
         prefsEditor.apply();
     }
 
+    public void setup(){
+        fragmentManager.beginTransaction().replace(R.id.main, new setup()).commit();
+    }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         try {
             weatherData = new WeatherData(sharedPreferences.getString("weatherData", ""));
-            //System.out.println(weatherData.getCurrently().getSummary());
-        }catch (JSONException e){
+        } catch (JSONException e) {
 
             e.getMessage();
         }
@@ -155,23 +157,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
             //refresh
-            getWeatherData();
             Fragment fragment = getFragmentManager().findFragmentById(R.id.main);
-            if ( fragment instanceof Updatable){
-                try {
-                    ((Updatable) fragment).updateWeather();
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
+            if ( fragment instanceof home){
+                getWeatherData(new home());
             }
         }
 
@@ -180,7 +174,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected( @NonNull MenuItem item) {
         // Handle navigation view item clicks here.
 
         switch (item.getItemId()){
@@ -203,7 +197,5 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void setup(){
-        fragmentManager.beginTransaction().replace(R.id.main, new setup()).commit();
-    }
+
 }
