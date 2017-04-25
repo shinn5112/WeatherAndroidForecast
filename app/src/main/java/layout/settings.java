@@ -40,6 +40,11 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
 
         latitude = (EditText) view.findViewById(R.id.latitude);
         longitude = (EditText) view.findViewById(R.id.longitude);
+
+        latitude.setText(String.valueOf(sharedPreferences.getFloat("latitude", 0)));
+        longitude.setText(String.valueOf(sharedPreferences.getFloat("longitude", 0)));
+
+
         submitButton = (Button) view.findViewById(R.id.submitButton);
 
         submitButton.setOnClickListener(this);
