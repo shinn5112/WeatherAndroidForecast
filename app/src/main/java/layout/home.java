@@ -113,14 +113,14 @@ public class home extends Fragment implements Updatable{
         currentCondition.setText(weatherData.getCurrently().getSummary());
         String highLowTemp = weatherData.getDaily().getDay(0).getTemperatureMax() + "\u00b0" + "/" + weatherData.getDaily().getDay(0).getTemperatureMin() + "\u00b0";
         highLow.setText(highLowTemp);
-        final int size = 300;
+
         String precip = weatherData.getCurrently().getPrecipProbabilty() + "%";
         precipitation.setText(precip);
         String icon = weatherData.getCurrently().getIcon();
         icon = icon.replaceAll("-", "_");
         int resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
         conditionImage.setImageResource(resID);
-        icon = weatherData.getCurrently().getPrecipType();
+        icon = "ic_" + weatherData.getCurrently().getPrecipType();
         resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
         precipIcon.setImageResource(resID);
 
@@ -130,13 +130,16 @@ public class home extends Fragment implements Updatable{
             TextView[] currentRow = hourlyViews[i]; // get the matching text view
             DataPoint currentData = weatherData.getHourly().getHour(i);
             // set the text values
-            String[] date = currentData.getTime().split(" ");
+
+            String[] date = currentData.getTime().split(" ");  // time formatting
             String[] hour = date[3].split(":");
             String time = hour[0] + ":" + hour[1] + " " + date[4];
-            double precipProbability = currentData.getPrecipProbabilty();
+
+            double precipProbability = currentData.getPrecipProbabilty(); // percip probability
             precipProbability *= 100;
             DecimalFormat df = new DecimalFormat("##");
             String hourPrecip =  df.format(precipProbability) + "% ";
+
             String hourIcon = currentData.getIcon();
             hourIcon = hourIcon.replaceAll("-", "_");
             int hourResID = getResources().getIdentifier(hourIcon , "drawable", getActivity().getPackageName());
@@ -144,16 +147,18 @@ public class home extends Fragment implements Updatable{
             int precipResID = getResources().getIdentifier(precipIcon , "drawable", getActivity().getPackageName());
 
             // style shit
+            final int size = 300;
             currentRow[0].setWidth(size);
             currentRow[0].setGravity(Gravity.CENTER);
             currentRow[1].setWidth(size);
             currentRow[1].setGravity(Gravity.CENTER);
-            currentRow[2].setWidth(size);
+            currentRow[2].setWidth(size/2);
             currentRow[2].setGravity(Gravity.CENTER);
+            DecimalFormat format = new DecimalFormat("##");
 
             // text setting
             currentRow[0].setText(time);
-            currentRow[1].setText(currentData.getSummary()); //// TODO: 4/18/17 format this and add additional data
+            currentRow[1].setText(currentData.getSummary() +"\nTemp: " + format.format(currentData.getTemperature()) + "\u00b0");
             currentRow[2].setText(hourPrecip);
             hourlyImages[i].getLayoutParams().height = 125;
             hourlyImages[i].getLayoutParams().width = 125;

@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity
         ForecastClient.create(configuration);
 
         //getting the forecast
-        double latitude = 40.2712;
-        double longitude = -74.7829;
+        double latitude = 38.4192;
+        double longitude = -82.4452;
         ForecastClient.getInstance()
                 .getForecast(latitude, longitude, new Callback<Forecast>() {
                     @Override
