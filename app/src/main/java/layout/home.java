@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import net.weatheraf.weatherandroidforecast.MainActivity;
 import net.weatheraf.weatherandroidforecast.R;
 
 import org.json.JSONException;
@@ -99,7 +100,7 @@ public class home extends Fragment implements Updatable{
             weatherData = new WeatherData(sharedPreferences.getString("weatherData", ""));
             updateWeather();
         }catch (JSONException e){
-
+            ((MainActivity)getActivity()).setup();
             e.getMessage();
         }
 
