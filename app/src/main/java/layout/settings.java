@@ -88,8 +88,15 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
     @Override
     public void onClick(View v) {
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-        prefsEditor.putFloat("latitude", Float.valueOf(latitude.getText().toString()));
-        prefsEditor.putFloat("longitude", Float.valueOf(longitude.getText().toString()));
+        Float latitudeF = Float.valueOf(latitude.getText().toString());
+        Float longitudeF = Float.valueOf(longitude.getText().toString());
+        if (latitudeF == 0 || longitudeF == 0){
+            //use default for huntington
+            latitudeF = 38.4192f;
+            longitudeF = -82.4452f;
+        }
+        prefsEditor.putFloat("latitude", latitudeF);
+        prefsEditor.putFloat("longitude", longitudeF);
         prefsEditor.apply();
 
         //close keyboard
