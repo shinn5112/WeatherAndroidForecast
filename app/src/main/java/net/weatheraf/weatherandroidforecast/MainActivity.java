@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private WeatherData weatherData;
     private FragmentManager fragmentManager = getFragmentManager();
     private static SharedPreferences sharedPreferences;
+    private boolean metric = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,8 @@ public class MainActivity extends AppCompatActivity
 
             e.getMessage();
         }
+
+        metric = sharedPreferences.getBoolean("metric", false);
         //// TODO: 4/20/17 remove debug
     }
 
@@ -128,6 +131,9 @@ public class MainActivity extends AppCompatActivity
     public void onPause(){
         super.onPause();
         insertWeatherData();
+        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+        prefsEditor.putBoolean("metric", metric);
+        prefsEditor.apply();
     }
 
     @Override

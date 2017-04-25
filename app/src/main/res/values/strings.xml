@@ -7,4 +7,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="units_array">
+        <item>Fahrenheit, mi</item>
+        <item>Celsius, km</item>
+    </string-array>
 </resources>
