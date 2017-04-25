@@ -109,13 +109,17 @@ public class home extends Fragment implements Updatable{
 
     public void updateWeather()throws JSONException{
         // applying weather info
-        currentTemp.setText(String.valueOf(weatherData.getCurrently().getTemperature() + "\u00b0"));
+        DecimalFormat df = new DecimalFormat("##");
+
+        currentTemp.setText(String.valueOf(df.format(weatherData.getCurrently().getTemperature()) + "\u00b0"));
         currentCondition.setText(weatherData.getCurrently().getSummary());
-        String highLowTemp = weatherData.getDaily().getDay(0).getTemperatureMax() + "\u00b0" + "/" + weatherData.getDaily().getDay(0).getTemperatureMin() + "\u00b0";
+        String highLowTemp = df.format(weatherData.getDaily().getDay(0).getTemperatureMax()) + "\u00b0" + "/" + df.format(weatherData.getDaily().getDay(0).getTemperatureMin()) + "\u00b0";
         highLow.setText(highLowTemp);
 
-        String precip = weatherData.getCurrently().getPrecipProbabilty() + "%";
-        precipitation.setText(precip);
+        double precipProbability = weatherData.getCurrently().getPrecipProbabilty();
+        precipProbability *= 100;
+        String currentPrecipProbability = df.format(precipProbability) + "%";
+        precipitation.setText(currentPrecipProbability);
         String icon = weatherData.getCurrently().getIcon();
         icon = icon.replaceAll("-", "_");
         int resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
@@ -135,9 +139,8 @@ public class home extends Fragment implements Updatable{
             String[] hour = date[3].split(":");
             String time = hour[0] + ":" + hour[1] + " " + date[4];
 
-            double precipProbability = currentData.getPrecipProbabilty(); // percip probability
+            precipProbability = currentData.getPrecipProbabilty(); // percip probability
             precipProbability *= 100;
-            DecimalFormat df = new DecimalFormat("##");
             String hourPrecip =  df.format(precipProbability) + "% ";
 
             String hourIcon = currentData.getIcon();
@@ -154,11 +157,10 @@ public class home extends Fragment implements Updatable{
             currentRow[1].setGravity(Gravity.CENTER);
             currentRow[2].setWidth(size/2);
             currentRow[2].setGravity(Gravity.CENTER);
-            DecimalFormat format = new DecimalFormat("##");
 
             // text setting
             currentRow[0].setText(time);
-            currentRow[1].setText(currentData.getSummary() +"\nTemp: " + format.format(currentData.getTemperature()) + "\u00b0");
+            currentRow[1].setText(currentData.getSummary() +"\nTemp: " + df.format(currentData.getTemperature()) + "\u00b0");
             currentRow[2].setText(hourPrecip);
             hourlyImages[i].getLayoutParams().height = 125;
             hourlyImages[i].getLayoutParams().width = 125;
