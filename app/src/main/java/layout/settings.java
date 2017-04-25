@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import net.weatheraf.weatherandroidforecast.MainActivity;
 import net.weatheraf.weatherandroidforecast.R;
@@ -94,6 +95,8 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
             //use default for huntington
             latitudeF = 38.4192f;
             longitudeF = -82.4452f;
+            Toast.makeText(getActivity().getApplicationContext(), "Default Location Used", Toast.LENGTH_SHORT).show();
+
         }
         prefsEditor.putFloat("latitude", latitudeF);
         prefsEditor.putFloat("longitude", longitudeF);
