@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.zetterstrom.com.forecast.ForecastClient;
 import android.zetterstrom.com.forecast.ForecastConfiguration;
@@ -37,14 +39,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String API_KEY = "43b285af3fdc21e9db38a2c02383d78c";
     private WeatherData weatherData;
     private FragmentManager fragmentManager = getFragmentManager();
     private static SharedPreferences sharedPreferences;
     private boolean metric = false;
+    private View header;
+    private TextView updateTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +65,15 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        header = navigationView.getHeaderView(0);
+        /*View view=navigationView.inflateHeaderView(R.layout.nav_header_main);*/
+        updateTime = (TextView)header.findViewById(R.id.updateTime);
 
         // setup
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
 
         if (sharedPreferences.getFloat("latitude", 0) == 0 || sharedPreferences.getFloat("longitude", 0) == 0) getWeatherData(new settings());
         else getWeatherData(new home());
-        //getSupportActionBar().setTitle("Huntington, WV");
 
     }
 
@@ -107,6 +112,13 @@ public class MainActivity extends AppCompatActivity
                                 Gson gson = new Gson();
                                 weatherData = new WeatherData(gson.toJson(response.body()));
                                 insertWeatherData();
+
+                                //set updated time
+                                String[] timeSplit = weatherData.getCurrently().getTime().split(" ");
+                                String[] clock = timeSplit[3].split(":");
+                                String time = "Updated: " + timeSplit[0] + " " + timeSplit[1].replace(",", "") + " " + clock[0] + ":" + clock[1] + " " + timeSplit[4];
+                                updateTime.setText(time);
+
                                 fragmentManager.beginTransaction().replace(R.id.main, fragment).commit();
                             }catch (Exception e){
                                 e.printStackTrace();
