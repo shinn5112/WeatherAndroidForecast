@@ -28,6 +28,7 @@ import layout.astronomical;
 import layout.forecast;
 import layout.home;
 import layout.settings;
+import layout.setup;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
