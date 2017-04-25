@@ -26,7 +26,7 @@ import WeatherAPI.WeatherData;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class home extends Fragment implements Updatable{
+public class home extends Fragment{
 
     private TextView currentTemp, currentCondition, precipitation, highLow;
     private TextView[][] hourlyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.

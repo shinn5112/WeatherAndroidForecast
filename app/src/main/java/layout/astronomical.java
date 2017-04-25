@@ -12,7 +12,7 @@ import net.weatheraf.weatherandroidforecast.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class astronomical extends Fragment implements Updatable{
+public class astronomical extends Fragment{
 
 
     public astronomical() {
@@ -27,8 +27,4 @@ public class astronomical extends Fragment implements Updatable{
         return inflater.inflate(R.layout.fragment_astronomical, container, false);
     }
 
-    @Override
-    public void updateWeather() {
-
-    }
 }
