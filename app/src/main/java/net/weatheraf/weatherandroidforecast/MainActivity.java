@@ -3,6 +3,8 @@ package net.weatheraf.weatherandroidforecast;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -21,6 +23,9 @@ import android.zetterstrom.com.forecast.models.Forecast;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
+
+import java.util.List;
+import java.util.Locale;
 
 import WeatherAPI.WeatherData;
 import layout.astronomical;
@@ -60,12 +65,14 @@ public class MainActivity extends AppCompatActivity
 
         // setup
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
-        getWeatherData(new home());
-        getSupportActionBar().setTitle("Huntington, WV");
+
+        if (sharedPreferences.getFloat("latitude", 0) == 0 || sharedPreferences.getFloat("longitude", 0) == 0) getWeatherData(new settings());
+        else getWeatherData(new home());
+        //getSupportActionBar().setTitle("Huntington, WV");
 
     }
 
-    private void getWeatherData(final Fragment fragment){
+    public void getWeatherData(final Fragment fragment){
         // setting up the API
         ForecastConfiguration configuration =
                 new ForecastConfiguration.Builder(API_KEY)
@@ -74,8 +81,23 @@ public class MainActivity extends AppCompatActivity
         ForecastClient.create(configuration);
 
         //getting the forecast
-        double latitude = 38.4192;
-        double longitude = -82.4452;
+        double latitude = sharedPreferences.getFloat("latitude", 0);
+        double longitude = sharedPreferences.getFloat("longitude", 0);
+
+
+        // getting city name
+        Geocoder gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
+            if (addresses.size() > 0) {
+                getSupportActionBar().setTitle(addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea());
+            } else {
+                // do your staff
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         ForecastClient.getInstance()
                 .getForecast(latitude, longitude, new Callback<Forecast>() {
                     @Override
@@ -112,7 +134,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setup(){
-        fragmentManager.beginTransaction().replace(R.id.main, new setup()).commit();
+        fragmentManager.beginTransaction().replace(R.id.main, new settings()).commit();
     }
 
     @Override

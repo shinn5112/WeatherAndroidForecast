@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import net.weatheraf.weatherandroidforecast.MainActivity;
 import net.weatheraf.weatherandroidforecast.R;
 
 /**
@@ -89,5 +91,13 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
         prefsEditor.putFloat("latitude", Float.valueOf(latitude.getText().toString()));
         prefsEditor.putFloat("longitude", Float.valueOf(longitude.getText().toString()));
         prefsEditor.apply();
+
+        //close keyboard
+        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+
+        ((MainActivity)getActivity()).getWeatherData(new home());
     }
 }

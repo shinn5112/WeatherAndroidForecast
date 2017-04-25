@@ -45,7 +45,7 @@
         android:layout_marginLeft="11dp"
         android:layout_marginTop="18dp"
         android:ems="10"
-        android:inputType="numberDecimal"
+        android:inputType="numberSigned|numberDecimal"
         app:layout_constraintLeft_toRightOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/latitude" />
 
@@ -56,7 +56,7 @@
         android:layout_marginLeft="25dp"
         android:layout_marginTop="19dp"
         android:ems="10"
-        android:inputType="numberDecimal"
+        android:inputType="numberSigned|numberDecimal"
         app:layout_constraintLeft_toRightOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
