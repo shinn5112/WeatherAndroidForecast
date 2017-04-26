@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // setup
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
 
+        getLocation(); //TODO this should fix restart crash
+
         if (sharedPreferences.getFloat("latitude", 0) == 0 || sharedPreferences.getFloat("longitude", 0) == 0) getWeatherData(new settings());
         else getWeatherData(new home());
 
