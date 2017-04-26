@@ -42,14 +42,14 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class settings extends Fragment implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener, TextWatcher{
+public class settings extends Fragment implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener,  View.OnClickListener{
 
     private Spinner unitSpinner;
     private SharedPreferences sharedPreferences;
     private boolean metric;
     private EditText zipCode;
     private Switch gpsSwitch;
-    private View view;
+    private Button applyZip;
 
     public settings() {
         // Required empty public constructor
@@ -58,7 +58,7 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_settings, container, false);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
         sharedPreferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
@@ -66,7 +66,8 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
 
         zipCode.setText(sharedPreferences.getString("zip", " "));
 
-        zipCode.addTextChangedListener(this);
+        applyZip = (Button) view.findViewById(R.id.applyZip);
+        applyZip.setOnClickListener(this);
 
         unitSpinner = (Spinner) view.findViewById(R.id.unitSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(view.getContext(), R.array.units_array, android.R.layout.simple_spinner_item);
@@ -118,60 +119,47 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
         ((MainActivity) getActivity()).getWeatherData(null);
     }
 
-
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    public void onClick(View v) {
+        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
 
-    }
+        Float latitudeF = sharedPreferences.getFloat("latitude", 0);
+        Float longitudeF = sharedPreferences.getFloat("longitude", 0);
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        //zip code location
+        final Geocoder geocoder = new Geocoder(getActivity());
+        final String zip = String.valueOf(zipCode.getText().toString());
 
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        if (!sharedPreferences.getBoolean("gps", false) && s.length() == 5) {
-            SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-
-            Float latitudeF = sharedPreferences.getFloat("latitude", 0);
-            Float longitudeF = sharedPreferences.getFloat("longitude", 0);
-
-            //zip code location
-            final Geocoder geocoder = new Geocoder(getActivity());
-            final String zip = String.valueOf(zipCode.getText().toString());
-
-            try {
-                List<Address> addresses = geocoder.getFromLocationName(zip, 1);
-                if (addresses != null && !addresses.isEmpty()) {
-                    Address address = addresses.get(0);
-                    // Use the address as needed
-                    latitudeF = (float) address.getLatitude();
-                    longitudeF = (float) address.getLongitude();
-                } else {
-                    // Display appropriate message when Geocoder services are not available
-                    Toast.makeText(getActivity(), "Unable to geocode zip code", Toast.LENGTH_LONG).show();
-                }
-            } catch (IOException e) {
-                // handle exception
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(zip, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                // Use the address as needed
+                latitudeF = (float) address.getLatitude();
+                longitudeF = (float) address.getLongitude();
+            } else {
+                // Display appropriate message when Geocoder services are not available
+                Toast.makeText(getActivity(), "Unable to geocode zip code", Toast.LENGTH_LONG).show();
             }
-
-
-            if (latitudeF == 0 || longitudeF == 0) {
-                //use default for huntington
-                latitudeF = 38.4192f;
-                longitudeF = -82.4452f;
-                Toast.makeText(getActivity().getApplicationContext(), "Default Location Used", Toast.LENGTH_SHORT).show();
-
-            }
-
-            prefsEditor.putString("zip", zip);
-            prefsEditor.putFloat("latitude", latitudeF);
-            prefsEditor.putFloat("longitude", longitudeF);
-            prefsEditor.apply();
-
-
-            ((MainActivity) getActivity()).getWeatherData(null);
+        } catch (IOException e) {
+            // handle exception
         }
+
+
+        if (latitudeF == 0 || longitudeF == 0) {
+            //use default for huntington
+            latitudeF = 38.4192f;
+            longitudeF = -82.4452f;
+            Toast.makeText(getActivity().getApplicationContext(), "Default Location Used", Toast.LENGTH_SHORT).show();
+
+        }
+
+        prefsEditor.putString("zip", zip);
+        prefsEditor.putFloat("latitude", latitudeF);
+        prefsEditor.putFloat("longitude", longitudeF);
+        prefsEditor.apply();
+
+
+        ((MainActivity) getActivity()).getWeatherData(null);
     }
 }
