@@ -159,5 +159,7 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
 
             inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
+        else Toast.makeText(getActivity(), "Invalid zip code", Toast.LENGTH_LONG).show();
+
     }
 }
