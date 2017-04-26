@@ -106,14 +106,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         metric = sharedPreferences.getBoolean("metric", false);
         Unit unit;
-        if (metric){
-            unit = Unit.SI;
-            System.out.println("METRIC");
-        }
-        else {
-            unit = Unit.US;
-            System.out.println("Imperial");
-        }
+        if (metric) unit = Unit.SI;
+        else unit = Unit.US;
 
         ForecastClient.getInstance()
                 .getForecast(latitude, longitude, null, null, unit, null, false, new Callback<Forecast>() {

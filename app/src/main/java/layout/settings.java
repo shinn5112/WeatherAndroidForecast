@@ -74,7 +74,6 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
         prefsEditor.putBoolean("metric", metric);
         prefsEditor.apply();
-        Log.d("METRIC SELECTION", String.valueOf(metric));
 
         ((MainActivity)getActivity()).getWeatherData(null);
     }
