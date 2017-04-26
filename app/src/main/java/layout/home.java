@@ -97,6 +97,7 @@ public class home extends Fragment{
 
         //Getting darkSky data
         try {
+            ((MainActivity) getActivity()).getWeatherData(null);
             weatherData = new WeatherData(sharedPreferences.getString("weatherData", ""));
             updateWeather();
         }catch (JSONException e){

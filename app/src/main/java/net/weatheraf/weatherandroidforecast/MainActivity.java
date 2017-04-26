@@ -1,13 +1,19 @@
 package net.weatheraf.weatherandroidforecast;
 
+import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -37,11 +43,12 @@ import layout.forecast;
 import layout.home;
 import layout.settings;
 import layout.setup;
+import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
     private static final String API_KEY = "43b285af3fdc21e9db38a2c02383d78c";
     private WeatherData weatherData;
@@ -50,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean metric = false;
     private View header;
     private TextView updateTime;
+
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setCacheDirectory(getCacheDir())
                         .build();
         ForecastClient.create(configuration);
+
+        getLocation();
 
         //getting the forecast
         double latitude = sharedPreferences.getFloat("latitude", 0);
@@ -240,4 +251,78 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    //for location
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Forward results to EasyPermissions
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    public void getLocation() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+
+        if (sharedPreferences.getBoolean("gps", false) && EasyPermissions.hasPermissions(this, perms)) {
+            // Already have permission, do the thing
+            // ...
+
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            //LocationListener locationListener = new LocationListener();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                System.out.println(location.getLatitude());
+                System.out.println(location.getLongitude());
+
+                SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+                prefsEditor.putFloat("latitude", (float) location.getLatitude());
+                prefsEditor.putFloat("longitude", (float) location.getLongitude());
+                prefsEditor.apply();
+            }
+        }
+    }
+
+    //@AfterPermissionGranted(RC_LOCATION)
+    public void getPermission() {
+        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            // Already have permission, do the thing
+            // ...
+            getLocation();
+
+        } else {
+            // Do not have permissions, request them now
+            EasyPermissions.requestPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION, 1, perms);
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }

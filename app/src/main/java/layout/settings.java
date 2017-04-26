@@ -40,7 +40,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class settings extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener, LocationListener {
+public class settings extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private Spinner unitSpinner;
     private SharedPreferences sharedPreferences;
@@ -48,8 +48,6 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
     private EditText latitude, longitude;
     private Button submitButton;
     private Switch gpsSwitch;
-
-    LocationManager locationManager;
 
     public settings() {
         // Required empty public constructor
@@ -86,6 +84,7 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
 
         gpsSwitch = (Switch) view.findViewById(R.id.gpsSwitch);
         gpsSwitch.setOnCheckedChangeListener(this);
+        gpsSwitch.setChecked(sharedPreferences.getBoolean("gps", false));
         // Inflate the layout for this fragment
         return view;
     }
@@ -138,67 +137,12 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            getPermission();
+            ((MainActivity) getActivity()).getPermission();
         }
+        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+        prefsEditor.putBoolean("gps", isChecked);
+        prefsEditor.apply();
     }
 
-    //for location
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    //@AfterPermissionGranted(RC_LOCATION)
-    private void getPermission() {
-        String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
-        if (EasyPermissions.hasPermissions(getActivity(), perms)) {
-            // Already have permission, do the thing
-            // ...
-
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            //LocationListener locationListener = new LocationListener();
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-                System.out.println(location.getLatitude());
-                System.out.println(location.getLongitude());
-            }
-
-
-        } else {
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION, 1, perms);
-        }
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 }
