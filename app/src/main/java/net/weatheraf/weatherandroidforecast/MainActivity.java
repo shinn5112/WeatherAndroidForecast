@@ -278,11 +278,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-                System.out.println(location.getLatitude());
-                System.out.println(location.getLongitude());
+                Location location;
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
+                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                }
+                else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, this);
+                    location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                }
+                else{
+                    //TODO Toast, location error show settings
+                    SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+                    prefsEditor.putBoolean("gps", false);
+                    prefsEditor.apply();
+                    return; //so last statements aren't reached
+                }
 
                 SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
                 prefsEditor.putFloat("latitude", (float) location.getLatitude());
