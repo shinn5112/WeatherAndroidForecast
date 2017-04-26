@@ -76,6 +76,7 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
         prefsEditor.apply();
         Log.d("METRIC SELECTION", String.valueOf(metric));
 
+        ((MainActivity)getActivity()).getWeatherData(null);
     }
 
     @Override
@@ -108,6 +109,6 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
         inputManager.hideSoftInputFromWindow(v.getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
 
-        ((MainActivity)getActivity()).getWeatherData(new home());
+        ((MainActivity)getActivity()).getWeatherData(null);
     }
 }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import android.zetterstrom.com.forecast.ForecastClient;
 import android.zetterstrom.com.forecast.ForecastConfiguration;
 import android.zetterstrom.com.forecast.models.Forecast;
+import android.zetterstrom.com.forecast.models.Unit;
 
 import com.google.gson.Gson;
 
@@ -103,8 +104,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
 
+        metric = sharedPreferences.getBoolean("metric", false);
+        Unit unit;
+        if (metric){
+            unit = Unit.SI;
+            System.out.println("METRIC");
+        }
+        else {
+            unit = Unit.US;
+            System.out.println("Imperial");
+        }
+
         ForecastClient.getInstance()
-                .getForecast(latitude, longitude, new Callback<Forecast>() {
+                .getForecast(latitude, longitude, null, null, unit, null, false, new Callback<Forecast>() {
                     @Override
                     public void onResponse(Call<Forecast> forecastCall, Response<Forecast> response) {
                         if (response.isSuccessful()) {
@@ -119,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 String time = "Updated: " + timeSplit[0] + " " + timeSplit[1].replace(",", "") + " " + clock[0] + ":" + clock[1] + " " + timeSplit[4];
                                 updateTime.setText(time);
 
-                                fragmentManager.beginTransaction().replace(R.id.main, fragment).commit();
+                                if (fragment != null) fragmentManager.beginTransaction().replace(R.id.main, fragment).commit();
                             }catch (Exception e){
                                 e.printStackTrace();
                                 setup();
@@ -158,8 +170,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             e.getMessage();
         }
-
-        metric = sharedPreferences.getBoolean("metric", false);
         //// TODO: 4/20/17 remove debug
     }
 
@@ -168,7 +178,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPause();
         insertWeatherData();
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-        prefsEditor.putBoolean("metric", metric);
         prefsEditor.apply();
     }
 
