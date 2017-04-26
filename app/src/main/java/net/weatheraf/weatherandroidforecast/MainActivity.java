@@ -82,7 +82,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // setup
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
-
+        /*TODO don't know if this did anything or not
+        if (!sharedPreferences.contains("gps")){
+            Toast.makeText(getApplicationContext(), "NO GPS", Toast.LENGTH_SHORT).show();
+            fragmentManager.beginTransaction().replace(R.id.main, new settings()).commit();
+        }
+        */
         getLocation(); //TODO this should fix restart crash
 
         if (sharedPreferences.getFloat("latitude", 0) == 0 || sharedPreferences.getFloat("longitude", 0) == 0) getWeatherData(new settings());

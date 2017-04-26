@@ -45,7 +45,7 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
     private Spinner unitSpinner;
     private SharedPreferences sharedPreferences;
     private boolean metric;
-    private EditText latitude, longitude;
+    private EditText zipCode;
     private Button submitButton;
     private Switch gpsSwitch;
 
@@ -60,12 +60,9 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
 
         sharedPreferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
-        latitude = (EditText) view.findViewById(R.id.latitude);
-        longitude = (EditText) view.findViewById(R.id.longitude);
+        zipCode = (EditText) view.findViewById(R.id.zipCode);
 
-        latitude.setText(String.valueOf(sharedPreferences.getFloat("latitude", 0)));
-        longitude.setText(String.valueOf(sharedPreferences.getFloat("longitude", 0)));
-
+        zipCode.setText(sharedPreferences.getString("zip", " "));
 
         submitButton = (Button) view.findViewById(R.id.submitButton);
 
@@ -112,8 +109,30 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
     @Override
     public void onClick(View v) {
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-        Float latitudeF = Float.valueOf(latitude.getText().toString());
-        Float longitudeF = Float.valueOf(longitude.getText().toString());
+
+        Float latitudeF = sharedPreferences.getFloat("latitude", 0);
+        Float longitudeF = sharedPreferences.getFloat("longitude", 0);
+
+        //zip code location
+        final Geocoder geocoder = new Geocoder(getActivity());
+        final String zip = String.valueOf(zipCode.getText().toString());
+
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(zip, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                // Use the address as needed
+                latitudeF = (float) address.getLatitude();
+                longitudeF = (float) address.getLongitude();
+            } else {
+                // Display appropriate message when Geocoder services are not available
+                Toast.makeText(getActivity(), "Unable to geocode zipcode", Toast.LENGTH_LONG).show();
+            }
+        } catch (IOException e) {
+            // handle exception
+        }
+
+
         if (latitudeF == 0 || longitudeF == 0) {
             //use default for huntington
             latitudeF = 38.4192f;
@@ -121,6 +140,7 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
             Toast.makeText(getActivity().getApplicationContext(), "Default Location Used", Toast.LENGTH_SHORT).show();
 
         }
+        prefsEditor.putString("zip", zip);
         prefsEditor.putFloat("latitude", latitudeF);
         prefsEditor.putFloat("longitude", longitudeF);
         prefsEditor.apply();
