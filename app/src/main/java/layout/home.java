@@ -167,6 +167,8 @@ public class home extends Fragment{
             hourlyImages[i].getLayoutParams().height = 125;
             hourlyImages[i].getLayoutParams().width = 125;
             hourlyImages[i].setImageResource(hourResID);
+            hourlyIcons[i].getLayoutParams().height = 50;
+            hourlyIcons[i].getLayoutParams().width = 50;
             hourlyIcons[i].setImageResource(precipResID);
         }
 
