@@ -42,7 +42,6 @@ import layout.astronomical;
 import layout.forecast;
 import layout.home;
 import layout.settings;
-import layout.setup;
 import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -116,8 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) {
                 getSupportActionBar().setTitle(addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea());
-            } else {
-                // do your staff
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -260,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //for location
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         // Forward results to EasyPermissions
@@ -272,19 +269,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
 
         if (sharedPreferences.getBoolean("gps", false) && EasyPermissions.hasPermissions(this, perms)) {
-            // Already have permission, do the thing
-            // ...
+
 
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            //LocationListener locationListener = new LocationListener();
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 Location location;
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
@@ -295,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 }
                 else{
-                    //TODO Toast, location error show settings
                     SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
                     prefsEditor.putBoolean("gps", false);
                     prefsEditor.apply();
@@ -314,12 +301,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void getPermission() {
         String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            // Already have permission, do the thing
-            // ...
             getLocation();
 
         } else {
-            // Do not have permissions, request them now
             EasyPermissions.requestPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION, 1, perms);
         }
     }
