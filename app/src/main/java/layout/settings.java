@@ -113,52 +113,50 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
     public void onClick(View v) {
         final String zip = String.valueOf(zipCode.getText().toString());
 
-            SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
 
-            Float latitudeF = sharedPreferences.getFloat("latitude", 0);
-            Float longitudeF = sharedPreferences.getFloat("longitude", 0);
+        Float latitudeF = sharedPreferences.getFloat("latitude", 0);
+        Float longitudeF = sharedPreferences.getFloat("longitude", 0);
 
-            //zip code location
-            final Geocoder geocoder = new Geocoder(getActivity());
+        //zip code location
+        final Geocoder geocoder = new Geocoder(getActivity());
 
 
-            try {
-                List<Address> addresses = geocoder.getFromLocationName(zip, 1);
-                if (addresses != null && !addresses.isEmpty()) {
-                    Address address = addresses.get(0);
-                    // Use the address as needed
-                    latitudeF = (float) address.getLatitude();
-                    longitudeF = (float) address.getLongitude();
-                } else {
-                    // Display appropriate message when Geocoder services are not available
-                    Toast.makeText(getActivity(), "Unable to geocode zip code", Toast.LENGTH_LONG).show();
-                }
-            } catch (IOException e) {
-                // handle exception
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(zip, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                // Use the address as needed
+                latitudeF = (float) address.getLatitude();
+                longitudeF = (float) address.getLongitude();
+            } else {
+                // Display appropriate message when Geocoder services are not available
+                Toast.makeText(getActivity(), "Unable to geocode zip code", Toast.LENGTH_LONG).show();
             }
+        } catch (IOException e) {
+            // handle exception
+        }
 
 
-            if (latitudeF == 0 || longitudeF == 0) {
-                //use default for huntington
-                latitudeF = 38.4192f;
-                longitudeF = -82.4452f;
-                Toast.makeText(getActivity().getApplicationContext(), "Default Location Used", Toast.LENGTH_SHORT).show();
+        if (latitudeF == 0 || longitudeF == 0) {
+            //use default for huntington
+            latitudeF = 38.4192f;
+            longitudeF = -82.4452f;
+            Toast.makeText(getActivity().getApplicationContext(), "Default Location Used", Toast.LENGTH_SHORT).show();
 
-            }
+        }
 
-            prefsEditor.putString("zip", zip);
-            prefsEditor.putFloat("latitude", latitudeF);
-            prefsEditor.putFloat("longitude", longitudeF);
-            prefsEditor.apply();
-
-
-            ((MainActivity) getActivity()).getWeatherData(null);
-
-            //close keyboard
-            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
-            inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        prefsEditor.putString("zip", zip);
+        prefsEditor.putFloat("latitude", latitudeF);
+        prefsEditor.putFloat("longitude", longitudeF);
+        prefsEditor.apply();
 
 
+        ((MainActivity) getActivity()).getWeatherData(null);
+
+        //close keyboard
+        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }
