@@ -112,7 +112,7 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
     @Override
     public void onClick(View v) {
         final String zip = String.valueOf(zipCode.getText().toString());
-        if (!sharedPreferences.getBoolean("gps", false) && zip.length() == 5) {
+
             SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
 
             Float latitudeF = sharedPreferences.getFloat("latitude", 0);
@@ -158,8 +158,7 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
             InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
             inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-        else Toast.makeText(getActivity(), "Invalid zip code", Toast.LENGTH_LONG).show();
+
 
     }
 }
