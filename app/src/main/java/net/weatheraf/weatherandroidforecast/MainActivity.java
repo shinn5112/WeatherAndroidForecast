@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -109,8 +110,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (metric) unit = Unit.SI;
         else unit = Unit.US;
 
+        //lets save some space by not getting these data points
+        List<String> excludeList = new ArrayList<>();
+        excludeList.add("minutely");
+
         ForecastClient.getInstance()
-                .getForecast(latitude, longitude, null, null, unit, null, false, new Callback<Forecast>() {
+                .getForecast(latitude, longitude, null, null, unit, excludeList, false, new Callback<Forecast>() {
                     @Override
                     public void onResponse(Call<Forecast> forecastCall, Response<Forecast> response) {
                         if (response.isSuccessful()) {
