@@ -2,6 +2,7 @@ package layout;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -30,7 +31,7 @@ import WeatherAPI.WeatherData;
 public class home extends Fragment{
 
     private TextView currentTemp, currentCondition, precipitation, highLow, feelsLike, feelsLikeInfo, humidity, humidityInfo,
-                        wind, windInfo, visibility, visibiltyInfo, uv, uvInfo;
+                        wind, windInfo, visibility, visibiltyInfo, uv, uvInfo, hourlyText;
     private TextView[][] hourlyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.
     private ImageView[] hourlyImages = new ImageView[12];
     private ImageView[] hourlyIcons = new ImageView[12];
@@ -67,6 +68,7 @@ public class home extends Fragment{
         visibiltyInfo = (TextView) view.findViewById(R.id.visibilityInfo);
         uv = (TextView) view.findViewById(R.id.uvIndex);
         uvInfo = (TextView) view.findViewById(R.id.uvInfo);
+        hourlyText = (TextView) view.findViewById(R.id.HourlyField);
 
         // setting up hourly forecast stuff
         hourlyViews[0] = new TextView[]{(TextView)view.findViewById(R.id.time0), (TextView)view.findViewById(R.id.summary0), (TextView)view.findViewById(R.id.precipitation0)};
@@ -156,7 +158,7 @@ public class home extends Fragment{
         //secondary info fields
         String feels = df.format(weatherData.getCurrently().getApparentTemperature()) + "\u00b0";
         feelsLikeInfo.setText(feels);
-        String humid = String.valueOf(weatherData.getCurrently().getHumidity() * 100) + "%%";
+        String humid = String.valueOf(weatherData.getCurrently().getHumidity() * 100) + "%";
         humidityInfo.setText(humid);
 
 
@@ -177,6 +179,9 @@ public class home extends Fragment{
             visibility.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             uv.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             uvInfo.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            hourlyText.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            precipIcon.setColorFilter(Color.argb(255, 255, 255, 255)); // White Tint
+
 
         }
 
@@ -228,6 +233,7 @@ public class home extends Fragment{
                 currentRow[0].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
                 currentRow[1].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
                 currentRow[2].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+                hourlyIcons[i - 1].setColorFilter(Color.argb(255, 255, 255, 255)); // White Tint
 
             }
         }
