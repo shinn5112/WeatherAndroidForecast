@@ -32,7 +32,7 @@ public class home extends Fragment{
     private TextView[][] hourlyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.
     private ImageView[] hourlyImages = new ImageView[12];
     private ImageView[] hourlyIcons = new ImageView[12];
-    private ImageView conditionImage, precipIcon;
+    private ImageView conditionImage, precipIcon, background;
     private WeatherData weatherData;
 
     public home() {
@@ -54,6 +54,7 @@ public class home extends Fragment{
         highLow = (TextView) view.findViewById(R.id.highLow);
         conditionImage = (ImageView) view.findViewById(R.id.currentImageView);
         precipIcon = (ImageView) view.findViewById(R.id.precipIcon);
+        background = (ImageView) view.findViewById(R.id.homeBackground);
 
         // setting up hourly forecast stuff
         hourlyViews[0] = new TextView[]{(TextView)view.findViewById(R.id.time0), (TextView)view.findViewById(R.id.summary0), (TextView)view.findViewById(R.id.precipitation0)};
@@ -125,7 +126,9 @@ public class home extends Fragment{
         String icon = weatherData.getCurrently().getIcon();
         icon = icon.replaceAll("-", "_");
         int resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
+        int backgroundID = getResources().getIdentifier("back_" + icon, "drawable", getActivity().getPackageName());
         conditionImage.setImageResource(resID);
+        background.setImageResource(backgroundID);
         icon = "ic_" + weatherData.getCurrently().getPrecipType();
         resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
         precipIcon.setImageResource(resID);
