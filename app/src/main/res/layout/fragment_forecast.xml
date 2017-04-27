@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/forecastBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -32,40 +32,43 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/HourlyField"
+                android:id="@+id/DailyField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
                 android:layout_marginStart="40dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="Daily Forecast"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/view2"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:layout_marginEnd="8dp" />
 
             <View
                 android:id="@+id/view2"
                 style="@style/Divider"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="1dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/HourlyField" />
+                app:layout_constraintTop_toBottomOf="@+id/DailyField" />
 
             <TableLayout
-                android:id="@+id/hourlyTable"
+                android:id="@+id/DailyTable"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/view2"
                 app:layout_constraintVertical_bias="0.0">
+
 
                 <TableRow
                     android:id="@+id/row0"
@@ -77,21 +80,23 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/time0"
-                                style="@style/HourlyElements"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="TextView" />
+                                android:gravity="center"
+                                android:text="Date" />
 
                             <ImageView
                                 android:id="@+id/image0"
@@ -105,26 +110,50 @@
                         <TextView
                             android:id="@+id/summary0"
                             style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                            android:layout_width="90dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:text="summary" />
 
-                        <TextView
-                            android:id="@+id/precipitation0"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/icon0"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_home" />
+                            <TextView
+                                android:id="@+id/hiLow0"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="hi/low" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/precipitation0"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="TextView" />
+
+                                <ImageView
+                                    android:id="@+id/icon0"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:srcCompat="@drawable/ic_home" />
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
                 </TableRow>
 
@@ -138,21 +167,23 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/time1"
-                                style="@style/HourlyElements"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="TextView" />
+                                android:gravity="center"
+                                android:text="Date" />
 
                             <ImageView
                                 android:id="@+id/image1"
@@ -166,26 +197,50 @@
                         <TextView
                             android:id="@+id/summary1"
                             style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                            android:layout_width="90dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:text="summary" />
 
-                        <TextView
-                            android:id="@+id/precipitation1"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/icon1"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_home" />
+                            <TextView
+                                android:id="@+id/hiLow1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="hi/low" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/precipitation1"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="TextView" />
+
+                                <ImageView
+                                    android:id="@+id/icon1"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:srcCompat="@drawable/ic_home" />
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
                 </TableRow>
 
@@ -199,21 +254,23 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/time2"
-                                style="@style/HourlyElements"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="TextView" />
+                                android:gravity="center"
+                                android:text="Date" />
 
                             <ImageView
                                 android:id="@+id/image2"
@@ -227,29 +284,52 @@
                         <TextView
                             android:id="@+id/summary2"
                             style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                            android:layout_width="90dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:text="summary" />
 
-                        <TextView
-                            android:id="@+id/precipitation2"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/icon2"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_home" />
+                            <TextView
+                                android:id="@+id/hiLow2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="hi/low" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/precipitation2"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="TextView" />
+
+                                <ImageView
+                                    android:id="@+id/icon2"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:srcCompat="@drawable/ic_home" />
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
                 </TableRow>
-
 
                 <TableRow
                     android:id="@+id/row3"
@@ -261,21 +341,23 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/time3"
-                                style="@style/HourlyElements"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="TextView" />
+                                android:gravity="center"
+                                android:text="Date" />
 
                             <ImageView
                                 android:id="@+id/image3"
@@ -289,26 +371,50 @@
                         <TextView
                             android:id="@+id/summary3"
                             style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                            android:layout_width="90dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:text="summary" />
 
-                        <TextView
-                            android:id="@+id/precipitation3"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/icon3"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_home" />
+                            <TextView
+                                android:id="@+id/hiLow3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="hi/low" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/precipitation3"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="TextView" />
+
+                                <ImageView
+                                    android:id="@+id/icon3"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:srcCompat="@drawable/ic_home" />
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
                 </TableRow>
 
@@ -322,21 +428,23 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/time4"
-                                style="@style/HourlyElements"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="TextView" />
+                                android:gravity="center"
+                                android:text="Date" />
 
                             <ImageView
                                 android:id="@+id/image4"
@@ -350,26 +458,50 @@
                         <TextView
                             android:id="@+id/summary4"
                             style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                            android:layout_width="90dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:text="summary" />
 
-                        <TextView
-                            android:id="@+id/precipitation4"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/icon4"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_home" />
+                            <TextView
+                                android:id="@+id/hiLow4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="hi/low" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/precipitation4"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="TextView" />
+
+                                <ImageView
+                                    android:id="@+id/icon4"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:srcCompat="@drawable/ic_home" />
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
                 </TableRow>
 
@@ -383,21 +515,23 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/time5"
-                                style="@style/HourlyElements"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="TextView" />
+                                android:gravity="center"
+                                android:text="Date" />
 
                             <ImageView
                                 android:id="@+id/image5"
@@ -411,54 +545,78 @@
                         <TextView
                             android:id="@+id/summary5"
                             style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                            android:layout_width="90dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:text="summary" />
 
-                        <TextView
-                            android:id="@+id/precipitation5"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/icon5"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_home" />
+                            <TextView
+                                android:id="@+id/hiLow5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="hi/low" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/precipitation5"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="TextView" />
+
+                                <ImageView
+                                    android:id="@+id/icon5"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:srcCompat="@drawable/ic_home" />
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
                 </TableRow>
 
                 <TableRow
                     android:id="@+id/row6"
-                    style="@style/HourlyRows"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    style="@style/HourlyRows">
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="20dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:orientation="vertical">
 
                             <TextView
                                 android:id="@+id/time6"
-                                style="@style/HourlyElements"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="TextView" />
+                                android:gravity="center"
+                                android:text="Date" />
 
                             <ImageView
                                 android:id="@+id/image6"
@@ -472,28 +630,53 @@
                         <TextView
                             android:id="@+id/summary6"
                             style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                            android:layout_width="90dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:text="summary" />
 
-                        <TextView
-                            android:id="@+id/precipitation6"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="25dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="TextView" />
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/icon6"
-                            style="@style/HourlyElements"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_home" />
+                            <TextView
+                                android:id="@+id/hiLow6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="hi/low" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/precipitation6"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="TextView" />
+
+                                <ImageView
+                                    android:id="@+id/icon6"
+                                    style="@style/HourlyElements"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    app:srcCompat="@drawable/ic_home" />
+                            </LinearLayout>
+                        </LinearLayout>
+
                     </LinearLayout>
                 </TableRow>
+
 
             </TableLayout>
 

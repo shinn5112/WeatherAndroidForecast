@@ -198,8 +198,6 @@ public class home extends Fragment{
             visibility.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             hourlyForecast.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             precipIcon.setColorFilter(Color.argb(255, 255, 255, 255)); // White Tint
-
-
         }
 
 

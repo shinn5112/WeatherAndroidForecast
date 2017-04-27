@@ -3,8 +3,10 @@ package layout;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +30,12 @@ import WeatherAPI.WeatherData;
  */
 public class forecast extends Fragment{
 
-    private TextView[][] dailyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.
-    private ImageView[] dailyImages = new ImageView[12];
-    private ImageView[] dailyIcons = new ImageView[12];
+    private TextView[][] dailyViews = new TextView[7][]; // 2d array of text views for the daily forecast.
+    private ImageView[] dailyImages = new ImageView[7];
+    private ImageView[] dailyIcons = new ImageView[7];
     private ImageView background;
     private WeatherData weatherData;
+    private TextView dailyField;
 
     public forecast() {
         // Required empty public constructor
@@ -48,14 +51,16 @@ public class forecast extends Fragment{
         //setup
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         background = (ImageView) view.findViewById(R.id.forecastBackground);
+        dailyField = (TextView)view.findViewById(R.id.DailyField);
+
         // setting up daily forecast stuff
-        dailyViews[0] = new TextView[]{(TextView)view.findViewById(R.id.time0), (TextView)view.findViewById(R.id.summary0), (TextView)view.findViewById(R.id.precipitation0)};
-        dailyViews[1] = new TextView[]{(TextView)view.findViewById(R.id.time1), (TextView)view.findViewById(R.id.summary1), (TextView)view.findViewById(R.id.precipitation1)};
-        dailyViews[2] = new TextView[]{(TextView)view.findViewById(R.id.time2), (TextView)view.findViewById(R.id.summary2), (TextView)view.findViewById(R.id.precipitation2)};
-        dailyViews[3] = new TextView[]{(TextView)view.findViewById(R.id.time3), (TextView)view.findViewById(R.id.summary3), (TextView)view.findViewById(R.id.precipitation3)};
-        dailyViews[4] = new TextView[]{(TextView)view.findViewById(R.id.time4), (TextView)view.findViewById(R.id.summary4), (TextView)view.findViewById(R.id.precipitation4)};
-        dailyViews[5] = new TextView[]{(TextView)view.findViewById(R.id.time5), (TextView)view.findViewById(R.id.summary5), (TextView)view.findViewById(R.id.precipitation5)};
-        dailyViews[6] = new TextView[]{(TextView)view.findViewById(R.id.time6), (TextView)view.findViewById(R.id.summary6), (TextView)view.findViewById(R.id.precipitation6)};
+        dailyViews[0] = new TextView[]{(TextView)view.findViewById(R.id.time0), (TextView)view.findViewById(R.id.summary0), (TextView)view.findViewById(R.id.hiLow0), (TextView)view.findViewById(R.id.precipitation0)};
+        dailyViews[1] = new TextView[]{(TextView)view.findViewById(R.id.time1), (TextView)view.findViewById(R.id.summary1), (TextView)view.findViewById(R.id.hiLow1), (TextView)view.findViewById(R.id.precipitation1)};
+        dailyViews[2] = new TextView[]{(TextView)view.findViewById(R.id.time2), (TextView)view.findViewById(R.id.summary2), (TextView)view.findViewById(R.id.hiLow2), (TextView)view.findViewById(R.id.precipitation2)};
+        dailyViews[3] = new TextView[]{(TextView)view.findViewById(R.id.time3), (TextView)view.findViewById(R.id.summary3), (TextView)view.findViewById(R.id.hiLow3), (TextView)view.findViewById(R.id.precipitation3)};
+        dailyViews[4] = new TextView[]{(TextView)view.findViewById(R.id.time4), (TextView)view.findViewById(R.id.summary4), (TextView)view.findViewById(R.id.hiLow4), (TextView)view.findViewById(R.id.precipitation4)};
+        dailyViews[5] = new TextView[]{(TextView)view.findViewById(R.id.time5), (TextView)view.findViewById(R.id.summary5), (TextView)view.findViewById(R.id.hiLow5), (TextView)view.findViewById(R.id.precipitation5)};
+        dailyViews[6] = new TextView[]{(TextView)view.findViewById(R.id.time6), (TextView)view.findViewById(R.id.summary6), (TextView)view.findViewById(R.id.hiLow6), (TextView)view.findViewById(R.id.precipitation6)};
 
         dailyImages[0] = (ImageView)view.findViewById(R.id.image0);
         dailyImages[1] = (ImageView)view.findViewById(R.id.image1);
@@ -91,16 +96,22 @@ public class forecast extends Fragment{
 
         //background image
         String icon = weatherData.getCurrently().getIcon();
+        icon = icon.replaceAll("-", "_");
         int backgroundID = getResources().getIdentifier("back_" + icon, "drawable", getActivity().getPackageName());
         background.setImageResource(backgroundID);
 
+        // change the color of the text if needed
+        if (icon.contains("rain") || icon.contains("night") || icon.equals("cloudy")){
+            dailyField.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+        }
+
         //updating daily weather
-        for (int i = 0; i < 7; i ++){
+        for (int i = 1; i < 8; i ++){
 
-            TextView[] currentRow = dailyViews[i]; // get the matching text view
+            TextView[] currentRow = dailyViews[i -1]; // get the matching text view
             DailyDataPoint currentData = weatherData.getDaily().getDay(i);
-            // set the text values
 
+            // set the text values
             String[] date = currentData.getTime().split(" ");  // time formatting
             String day = date[0] + " " + date[1].replace(",", "");
 
@@ -113,28 +124,26 @@ public class forecast extends Fragment{
             int hourResID = getResources().getIdentifier(hourIcon , "drawable", getActivity().getPackageName());
             String precipIcon = "ic_" + currentData.getPrecipType();
             int precipResID = getResources().getIdentifier(precipIcon , "drawable", getActivity().getPackageName());
-
             String highLow = df.format(currentData.getTemperatureMax()) + "\u00b0/" + df.format(currentData.getTemperatureMin()) + "\u00b0";
-
-            // style shit
-            final int size = 300;
-            currentRow[0].setWidth(size);
-            currentRow[0].setGravity(Gravity.CENTER);
-            currentRow[1].setWidth(size);
-            currentRow[1].setGravity(Gravity.CENTER);
-            currentRow[2].setWidth(size/2);
-            currentRow[2].setGravity(Gravity.CENTER);
 
             // text setting
             currentRow[0].setText(day);
-            currentRow[1].setText(currentData.getSummary() +"\n" + highLow);
-            currentRow[2].setText(hourPrecip);
-            dailyImages[i].getLayoutParams().height = 125;
-            dailyImages[i].getLayoutParams().width = 125;
-            dailyImages[i].setImageResource(hourResID);
-            dailyIcons[i].setImageResource(precipResID);
+            currentRow[1].setText(currentData.getSummary());
+            currentRow[2].setText(highLow);
+            currentRow[3].setText(hourPrecip);
+            dailyImages[i-1].getLayoutParams().height = 125;
+            dailyImages[i-1].getLayoutParams().width = 125;
+            dailyImages[i-1].setImageResource(hourResID);
+            dailyIcons[i-1].setImageResource(precipResID);
+
+            //color changes as if needed
+            if (icon.contains("rain") || icon.contains("night") || icon.equals("cloudy")){
+                currentRow[0].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+                currentRow[1].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+                currentRow[2].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+                currentRow[3].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+                dailyIcons[i - 1].setColorFilter(Color.argb(255, 255, 255, 255)); // White Tint
+            }
         }
-
-
     }
 }
