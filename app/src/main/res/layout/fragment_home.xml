@@ -117,12 +117,15 @@
                 android:id="@+id/feelsLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="40dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="37dp"
                 android:text="Feels Like "
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/currentImageView" />
+                app:layout_constraintTop_toBottomOf="@+id/currentImageView"
+                android:layout_marginRight="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0.095" />
 
             <TextView
                 android:id="@+id/feelsLikeInfo"
@@ -137,7 +140,7 @@
                 android:id="@+id/humidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="44dp"
+                android:layout_marginLeft="17dp"
                 android:layout_marginTop="37dp"
                 android:text="Humidity "
                 app:layout_constraintLeft_toRightOf="@+id/feelsLikeInfo"
