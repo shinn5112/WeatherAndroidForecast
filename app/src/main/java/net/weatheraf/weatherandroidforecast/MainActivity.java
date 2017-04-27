@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean metric = false;
     private View header;
     private TextView updateTime;
-    private ImageView background;
 
     LocationManager locationManager;
 
@@ -83,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // setup
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
-        background = (ImageView) findViewById(R.id.background);
         getLocation();
 
         if (sharedPreferences.getFloat("latitude", 0) == 0 || sharedPreferences.getFloat("longitude", 0) == 0) getWeatherData(new settings());
@@ -142,11 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 String time = "Updated: " + timeSplit[0] + " " + timeSplit[1].replace(",", "") + " " + clock[0] + ":" + clock[1] + " " + timeSplit[4];
                                 updateTime.setText(time);
 
-                                // update background image
-                                String icon = weatherData.getCurrently().getIcon();
-                                icon = icon.replaceAll("-", "_");
-                                int backgroundID = getResources().getIdentifier("back_" + icon, "drawable", getPackageName());
-                                background.setImageResource(backgroundID);
+
 
                                 // set the fragment
                                 if (fragment != null) fragmentManager.beginTransaction().replace(R.id.main, fragment).commit();

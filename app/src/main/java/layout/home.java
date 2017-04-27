@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,12 @@ import WeatherAPI.WeatherData;
  */
 public class home extends Fragment{
 
-    private TextView currentTemp, currentCondition, precipitation, highLow;
+    private TextView currentTemp, currentCondition, precipitation, highLow, feelsLike, feelsLikeInfo, humidity, humidityInfo,
+                        wind, windInfo, visibility, visibiltyInfo, uv, uvInfo;
     private TextView[][] hourlyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.
     private ImageView[] hourlyImages = new ImageView[12];
     private ImageView[] hourlyIcons = new ImageView[12];
-    private ImageView conditionImage, precipIcon;
+    private ImageView conditionImage, precipIcon, background;
     private WeatherData weatherData;
 
     public home() {
@@ -54,6 +56,17 @@ public class home extends Fragment{
         highLow = (TextView) view.findViewById(R.id.highLow);
         conditionImage = (ImageView) view.findViewById(R.id.currentImageView);
         precipIcon = (ImageView) view.findViewById(R.id.precipIcon);
+        background = (ImageView) view.findViewById(R.id.homeBackground);
+        feelsLike = (TextView) view.findViewById(R.id.feelsLike);
+        feelsLikeInfo = (TextView) view.findViewById(R.id.feelsLikeInfo);
+        humidity = (TextView) view.findViewById(R.id.humidity);
+        humidityInfo = (TextView) view.findViewById(R.id.humidtyInfo);
+        wind = (TextView) view.findViewById(R.id.wind);
+        windInfo = (TextView) view.findViewById(R.id.windInfo);
+        visibility = (TextView) view.findViewById(R.id.visibility);
+        visibiltyInfo = (TextView) view.findViewById(R.id.visibilityInfo);
+        uv = (TextView) view.findViewById(R.id.uvIndex);
+        uvInfo = (TextView) view.findViewById(R.id.uvInfo);
 
         // setting up hourly forecast stuff
         hourlyViews[0] = new TextView[]{(TextView)view.findViewById(R.id.time0), (TextView)view.findViewById(R.id.summary0), (TextView)view.findViewById(R.id.precipitation0)};
@@ -113,28 +126,66 @@ public class home extends Fragment{
         // applying weather info
         DecimalFormat df = new DecimalFormat("##");
 
+        // for the current weather
         currentTemp.setText(String.valueOf(df.format(weatherData.getCurrently().getTemperature()) + "\u00b0"));
         currentCondition.setText(weatherData.getCurrently().getSummary());
         String highLowTemp = df.format(weatherData.getDaily().getDay(0).getTemperatureMax()) + "\u00b0" + "/" + df.format(weatherData.getDaily().getDay(0).getTemperatureMin()) + "\u00b0";
         highLow.setText(highLowTemp);
-
-        double precipProbability = weatherData.getCurrently().getPrecipProbabilty();
-        precipProbability *= 100;
+        double precipProbability = weatherData.getCurrently().getPrecipProbabilty() * 100;
         String currentPrecipProbability = df.format(precipProbability) + "%";
         precipitation.setText(currentPrecipProbability);
+
+        // making icon text usable
         String icon = weatherData.getCurrently().getIcon();
         icon = icon.replaceAll("-", "_");
+
+        // setting current weather icon
         int resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
         conditionImage.setImageResource(resID);
+
+        // update background image
+        icon = icon.replaceAll("-", "_");
+        int backgroundID = getResources().getIdentifier("back_" + icon, "drawable", getActivity().getPackageName());
+        background.setImageResource(backgroundID);
+
+        //setting percip icon type
         icon = "ic_" + weatherData.getCurrently().getPrecipType();
         resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
         precipIcon.setImageResource(resID);
+
+        //secondary info fields
+        String feels = df.format(weatherData.getCurrently().getApparentTemperature()) + "\u00b0";
+        feelsLikeInfo.setText(feels);
+        String humid = String.valueOf(weatherData.getCurrently().getHumidity() * 100) + "%%";
+        humidityInfo.setText(humid);
+
+
+
+        // changing text color if needed
+        if (icon.contains("rain") || icon.contains("night") || icon.equals("cloudy")){
+            currentTemp.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            currentCondition.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            precipitation.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            highLow.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            feelsLike.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            feelsLikeInfo.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            humidityInfo.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            humidity.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            wind.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            windInfo.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            visibiltyInfo.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            visibility.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            uv.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            uvInfo.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+
+        }
+
 
         //updating hourly weather
         for (int i = 1; i < 13; i ++){
 
             TextView[] currentRow = hourlyViews[i - 1]; // get the matching text view
-            DataPoint currentData = weatherData.getHourly().getHour(i);
+            DataPoint currentData = weatherData.getHourly().getHour(i); // get matching data that is for the next hour on
             // set the text values
 
             String[] date = currentData.getTime().split(" ");  // time formatting
@@ -145,6 +196,7 @@ public class home extends Fragment{
             precipProbability *= 100;
             String hourPrecip =  df.format(precipProbability) + "% ";
 
+            // setting icons
             String hourIcon = currentData.getIcon();
             hourIcon = hourIcon.replaceAll("-", "_");
             int hourResID = getResources().getIdentifier(hourIcon , "drawable", getActivity().getPackageName());
@@ -160,7 +212,7 @@ public class home extends Fragment{
             currentRow[2].setWidth(size/2);
             currentRow[2].setGravity(Gravity.CENTER);
 
-            // text setting
+            // text setting and image formatting
             currentRow[0].setText(time);
             currentRow[1].setText(currentData.getSummary() +"\nTemp: " + df.format(currentData.getTemperature()) + "\u00b0");
             currentRow[2].setText(hourPrecip);
@@ -170,6 +222,14 @@ public class home extends Fragment{
             hourlyIcons[i - 1].getLayoutParams().height = 50;
             hourlyIcons[i - 1].getLayoutParams().width = 50;
             hourlyIcons[i - 1].setImageResource(precipResID);
+
+            //formatting text color if needed, this goes off the current background image
+            if (icon.contains("rain") || icon.contains("night") || icon.equals("cloudy")){
+                currentRow[0].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+                currentRow[1].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+                currentRow[2].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+
+            }
         }
 
 

@@ -31,6 +31,7 @@ public class forecast extends Fragment{
     private TextView[][] dailyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.
     private ImageView[] dailyImages = new ImageView[12];
     private ImageView[] dailyIcons = new ImageView[12];
+    private ImageView background;
     private WeatherData weatherData;
 
     public forecast() {
@@ -44,9 +45,10 @@ public class forecast extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_forecast, container, false);
 
+        //setup
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-
-        // setting up hourly forecast stuff
+        background = (ImageView) view.findViewById(R.id.forecastBackground);
+        // setting up daily forecast stuff
         dailyViews[0] = new TextView[]{(TextView)view.findViewById(R.id.time0), (TextView)view.findViewById(R.id.summary0), (TextView)view.findViewById(R.id.precipitation0)};
         dailyViews[1] = new TextView[]{(TextView)view.findViewById(R.id.time1), (TextView)view.findViewById(R.id.summary1), (TextView)view.findViewById(R.id.precipitation1)};
         dailyViews[2] = new TextView[]{(TextView)view.findViewById(R.id.time2), (TextView)view.findViewById(R.id.summary2), (TextView)view.findViewById(R.id.precipitation2)};
@@ -86,6 +88,11 @@ public class forecast extends Fragment{
     public void updateWeather()throws JSONException{
         // applying weather info
         DecimalFormat df = new DecimalFormat("##");
+
+        //background image
+        String icon = weatherData.getCurrently().getIcon();
+        int backgroundID = getResources().getIdentifier("back_" + icon, "drawable", getActivity().getPackageName());
+        background.setImageResource(backgroundID);
 
         //updating daily weather
         for (int i = 0; i < 7; i ++){

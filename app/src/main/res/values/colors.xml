@@ -5,4 +5,5 @@
     <color name="colorAccent">#fdd835</color>
     <color name="Hourly">#98bcbcba</color>
     <color name="dividerColor">#c0c0c0</color>
+    <color name="rain">#ffffff</color>
 </resources>
