@@ -158,7 +158,7 @@ public class home extends Fragment{
         //secondary info fields
         String feels = df.format(weatherData.getCurrently().getApparentTemperature()) + "\u00b0";
         feelsLikeInfo.setText(feels);
-        String humid = String.valueOf(weatherData.getCurrently().getHumidity() * 100) + "%";
+        String humid = df.format(weatherData.getCurrently().getHumidity() * 100) + "%";
         humidityInfo.setText(humid);
 
 
