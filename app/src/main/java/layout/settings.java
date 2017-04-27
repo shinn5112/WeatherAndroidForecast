@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -110,6 +111,8 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
 
     @Override
     public void onClick(View v) {
+        final String zip = String.valueOf(zipCode.getText().toString());
+
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
 
         Float latitudeF = sharedPreferences.getFloat("latitude", 0);
@@ -117,7 +120,7 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
 
         //zip code location
         final Geocoder geocoder = new Geocoder(getActivity());
-        final String zip = String.valueOf(zipCode.getText().toString());
+
 
         try {
             List<Address> addresses = geocoder.getFromLocationName(zip, 1);
@@ -150,5 +153,10 @@ public class settings extends Fragment implements AdapterView.OnItemSelectedList
 
 
         ((MainActivity) getActivity()).getWeatherData(null);
+
+        //close keyboard
+        InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

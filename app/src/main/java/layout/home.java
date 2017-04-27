@@ -134,7 +134,7 @@ public class home extends Fragment{
         precipIcon.setImageResource(resID);
 
         //updating hourly weather
-        for (int i = 0; i < 12; i ++){
+        for (int i = 1; i < 13; i ++){
 
             TextView[] currentRow = hourlyViews[i]; // get the matching text view
             DataPoint currentData = weatherData.getHourly().getHour(i);
