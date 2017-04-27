@@ -32,7 +32,7 @@ public class home extends Fragment{
     private TextView[][] hourlyViews = new TextView[12][]; // 2d array of text views for the hourly forecast.
     private ImageView[] hourlyImages = new ImageView[12];
     private ImageView[] hourlyIcons = new ImageView[12];
-    private ImageView conditionImage, precipIcon, background;
+    private ImageView conditionImage, precipIcon;
     private WeatherData weatherData;
 
     public home() {
@@ -54,7 +54,6 @@ public class home extends Fragment{
         highLow = (TextView) view.findViewById(R.id.highLow);
         conditionImage = (ImageView) view.findViewById(R.id.currentImageView);
         precipIcon = (ImageView) view.findViewById(R.id.precipIcon);
-        background = (ImageView) view.findViewById(R.id.homeBackground);
 
         // setting up hourly forecast stuff
         hourlyViews[0] = new TextView[]{(TextView)view.findViewById(R.id.time0), (TextView)view.findViewById(R.id.summary0), (TextView)view.findViewById(R.id.precipitation0)};
@@ -126,9 +125,7 @@ public class home extends Fragment{
         String icon = weatherData.getCurrently().getIcon();
         icon = icon.replaceAll("-", "_");
         int resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
-        int backgroundID = getResources().getIdentifier("back_" + icon, "drawable", getActivity().getPackageName());
         conditionImage.setImageResource(resID);
-        background.setImageResource(backgroundID);
         icon = "ic_" + weatherData.getCurrently().getPrecipType();
         resID = getResources().getIdentifier(icon , "drawable", getActivity().getPackageName());
         precipIcon.setImageResource(resID);
@@ -136,7 +133,7 @@ public class home extends Fragment{
         //updating hourly weather
         for (int i = 1; i < 13; i ++){
 
-            TextView[] currentRow = hourlyViews[i]; // get the matching text view
+            TextView[] currentRow = hourlyViews[i - 1]; // get the matching text view
             DataPoint currentData = weatherData.getHourly().getHour(i);
             // set the text values
 
@@ -167,12 +164,12 @@ public class home extends Fragment{
             currentRow[0].setText(time);
             currentRow[1].setText(currentData.getSummary() +"\nTemp: " + df.format(currentData.getTemperature()) + "\u00b0");
             currentRow[2].setText(hourPrecip);
-            hourlyImages[i].getLayoutParams().height = 125;
-            hourlyImages[i].getLayoutParams().width = 125;
-            hourlyImages[i].setImageResource(hourResID);
-            hourlyIcons[i].getLayoutParams().height = 50;
-            hourlyIcons[i].getLayoutParams().width = 50;
-            hourlyIcons[i].setImageResource(precipResID);
+            hourlyImages[i - 1].getLayoutParams().height = 125;
+            hourlyImages[i - 1].getLayoutParams().width = 125;
+            hourlyImages[i - 1].setImageResource(hourResID);
+            hourlyIcons[i - 1].getLayoutParams().height = 50;
+            hourlyIcons[i - 1].getLayoutParams().width = 50;
+            hourlyIcons[i - 1].setImageResource(precipResID);
         }
 
 

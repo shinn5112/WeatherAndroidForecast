@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.zetterstrom.com.forecast.ForecastClient;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean metric = false;
     private View header;
     private TextView updateTime;
+    private ImageView background;
 
     LocationManager locationManager;
 
@@ -81,13 +83,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // setup
         sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE);
-        /*TODO don't know if this did anything or not
-        if (!sharedPreferences.contains("gps")){
-            Toast.makeText(getApplicationContext(), "NO GPS", Toast.LENGTH_SHORT).show();
-            fragmentManager.beginTransaction().replace(R.id.main, new settings()).commit();
-        }
-        */
-        getLocation(); //TODO this should fix restart crash
+        background = (ImageView) findViewById(R.id.background);
+        getLocation();
 
         if (sharedPreferences.getFloat("latitude", 0) == 0 || sharedPreferences.getFloat("longitude", 0) == 0) getWeatherData(new settings());
         else getWeatherData(new home());
@@ -139,12 +136,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 weatherData = new WeatherData(gson.toJson(response.body()));
                                 insertWeatherData();
 
-                                //set updated time
+                                // update fields
                                 String[] timeSplit = weatherData.getCurrently().getTime().split(" ");
                                 String[] clock = timeSplit[3].split(":");
                                 String time = "Updated: " + timeSplit[0] + " " + timeSplit[1].replace(",", "") + " " + clock[0] + ":" + clock[1] + " " + timeSplit[4];
                                 updateTime.setText(time);
 
+                                // update background image
+                                String icon = weatherData.getCurrently().getIcon();
+                                icon = icon.replaceAll("-", "_");
+                                int backgroundID = getResources().getIdentifier("back_" + icon, "drawable", getPackageName());
+                                background.setImageResource(backgroundID);
+
+                                // set the fragment
                                 if (fragment != null) fragmentManager.beginTransaction().replace(R.id.main, fragment).commit();
                             }catch (Exception e){
                                 e.printStackTrace();
