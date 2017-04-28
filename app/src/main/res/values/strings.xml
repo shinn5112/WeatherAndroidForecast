@@ -7,6 +7,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="astronomical">ASTRONOMICAL</string>
+    <string name="date">Date</string>
+    <string name="moon">Moon</string>
+    <string name="phase">Phase</string>
+    <string name="rising">RISING</string>
+    <string name="setting">SETTING</string>
 
     <string-array name="units_array">
         <item>Fahrenheit, mi</item>
