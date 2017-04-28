@@ -176,7 +176,7 @@ public class home extends Fragment{
         temp = df.format(weatherData.getCurrently().getVisibility()) + " " + unit + " \nVisibility";
         visibility.setText(temp);
 
-        temp = df.format(weatherData.getCurrently().getCloudCover() * 100) + "%";
+        temp = df.format(weatherData.getCurrently().getCloudCover() * 100) + "% \nCloud Cover";
         cloudCover.setText(temp);
 
         //Images
