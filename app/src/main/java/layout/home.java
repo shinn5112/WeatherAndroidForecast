@@ -175,6 +175,7 @@ public class home extends Fragment{
 
         temp = df.format(weatherData.getCurrently().getVisibility()) + " " + unit + " \nVisibility";
         visibility.setText(temp);
+        if (weatherData.getCurrently().getVisibility() == -1) ((MainActivity) getActivity()).getWeatherData(new home()); //TODO almost solution
 
         temp = df.format(weatherData.getCurrently().getCloudCover() * 100) + "% \nCloud Cover";
         cloudCover.setText(temp);

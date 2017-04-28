@@ -86,7 +86,13 @@ public class DataPoint {
     }
 
     public double getVisibility() throws JSONException{
-        return data.getDouble("visibility");
+        double tempData;
+        try{
+            tempData = data.getDouble("visibility");
+        }catch (Exception e){
+            tempData = -1;
+        }
+        return tempData;
     }
 
     public double getCloudCover() throws JSONException{
