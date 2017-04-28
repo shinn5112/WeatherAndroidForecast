@@ -36,6 +36,7 @@ public class home extends Fragment{
     private ImageView[] hourlyIcons = new ImageView[12];
     private ImageView conditionImage, precipIcon, background;
     private WeatherData weatherData;
+    private SharedPreferences sharedPreferences;
 
     public home() {
         // Required empty public constructor
@@ -47,7 +48,7 @@ public class home extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
 
         // setting up fields
         currentTemp= (TextView) view.findViewById(R.id.currentTemp);
@@ -136,15 +137,14 @@ public class home extends Fragment{
         temp = df.format(weatherData.getCurrently().getPrecipProbabilty() * 100) + "%";
         precipitation.setText(temp);
 
-        temp = df.format(weatherData.getCurrently().getApparentTemperature()) + "\nFeels Like";
+        temp = df.format(weatherData.getCurrently().getApparentTemperature()) + "\u00b0\nFeels Like";
         feelsLike.setText(temp);
 
-        temp = df.format(weatherData.getCurrently().getHumidity() * 100) + "\nHumidity"; //TODO make sure 100% displays correctly
+        temp = df.format(weatherData.getCurrently().getHumidity() * 100) + "%\nHumidity"; //TODO make sure 100% displays correctly
         humidity.setText(temp);
 
-        int windDirection = weatherData.getCurrently().getWindBearing(); //TODO can be null is speed is 0,  so fix in wrapper
+        int windDirection = weatherData.getCurrently().getWindBearing();
         String direction;
-        windDirection = 2;
         if (windDirection > 348.75 && windDirection <= 11.25) direction = "N";
         else if (windDirection > 11.25 && windDirection <= 33.75) direction = "NNE";
         else if (windDirection > 33.75 && windDirection <= 56.25) direction = "NE";
@@ -160,17 +160,23 @@ public class home extends Fragment{
         else if (windDirection > 258.75 && windDirection <= 281.25) direction = "W";
         else if (windDirection > 281.25 && windDirection <= 303.75) direction = "WNW";
         else if (windDirection > 303.75 && windDirection <= 326.25) direction = "NW";
-        else direction = "NNW"; // windDirection > 326.25 && windDirection <= 348.75
+        else if (windDirection > 326.25 && windDirection <= 348.75) direction = "NNW";
+        else direction = "";
 
+        String unit;
+        if (sharedPreferences.getBoolean("metric", false)) unit = "m/h";
+        else unit = "mi/h";
 
-        temp = df.format(weatherData.getCurrently().getWindSpeed()) + "unit" + direction + "\nWind";
+        temp = df.format(weatherData.getCurrently().getWindSpeed()) + " " + unit + " " + direction + "\nWind";
         wind.setText(temp);
 
-        //temp = df.format(weatherData.getCurrently().getVisibility()) + "unit \nVisibility"; //TODO a 0 case
-        temp = "bad";
+        if (sharedPreferences.getBoolean("metric", false)) unit = "km/h";
+        else unit = "mi/h";
+
+        temp = df.format(weatherData.getCurrently().getVisibility()) + " " + unit + " \nVisibility";
         visibility.setText(temp);
 
-        temp = df.format(weatherData.getCurrently().getCloudCover() * 100);
+        temp = df.format(weatherData.getCurrently().getCloudCover() * 100) + "%";
         cloudCover.setText(temp);
 
         //Images
@@ -197,6 +203,7 @@ public class home extends Fragment{
             wind.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             visibility.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             hourlyForecast.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            cloudCover.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             precipIcon.setColorFilter(Color.argb(255, 255, 255, 255)); // White Tint
         }
 

@@ -76,7 +76,13 @@ public class DataPoint {
     }
 
     public int getWindBearing() throws JSONException{
-        return data.getInt("windBearing");
+        int tempData;
+        try{
+            tempData = data.getInt("windBearing");
+        }catch (Exception e){
+            tempData = -1;
+        }
+        return tempData;
     }
 
     public double getVisibility() throws JSONException{
