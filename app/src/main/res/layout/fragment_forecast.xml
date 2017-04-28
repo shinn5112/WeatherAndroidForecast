@@ -84,11 +84,18 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="20dp"
+                        <ImageView
+                            android:id="@+id/image0"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
+                            app:srcCompat="@drawable/ic_home" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="vertical">
 
                             <TextView
@@ -96,27 +103,21 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Date" />
+                                android:text="Date"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp"/>
 
-                            <ImageView
-                                android:id="@+id/image0"
+                            <TextView
+                                android:id="@+id/summary0"
                                 style="@style/HourlyElements"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                app:srcCompat="@drawable/ic_home" />
+                                android:gravity="center"
+                                android:text="summary" />
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/summary0"
-                            style="@style/HourlyElements"
-                            android:layout_width="90dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="summary" />
-
                         <LinearLayout
-                            android:layout_width="25dp"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -171,8 +172,16 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
+                        <ImageView
+                            android:id="@+id/image1"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
+
                         <LinearLayout
-                            android:layout_width="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -183,27 +192,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Date" />
+                                android:text="Date"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp"/>
 
-                            <ImageView
-                                android:id="@+id/image1"
+                            <TextView
+                                android:id="@+id/summary1"
                                 style="@style/HourlyElements"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                app:srcCompat="@drawable/ic_home" />
+                                android:gravity="center"
+                                android:text="summary" />
+
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/summary1"
-                            style="@style/HourlyElements"
-                            android:layout_width="90dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="summary" />
-
                         <LinearLayout
-                            android:layout_width="25dp"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -258,8 +262,16 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
+                        <ImageView
+                            android:id="@+id/image2"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
+
                         <LinearLayout
-                            android:layout_width="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -270,27 +282,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Date" />
+                                android:text="Date"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp"/>
 
-                            <ImageView
-                                android:id="@+id/image2"
+                            <TextView
+                                android:id="@+id/summary2"
                                 style="@style/HourlyElements"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                app:srcCompat="@drawable/ic_home" />
+                                android:gravity="center"
+                                android:text="summary" />
+
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/summary2"
-                            style="@style/HourlyElements"
-                            android:layout_width="90dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="summary" />
-
                         <LinearLayout
-                            android:layout_width="25dp"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -345,8 +352,16 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
+                        <ImageView
+                            android:id="@+id/image3"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
+
                         <LinearLayout
-                            android:layout_width="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -357,27 +372,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Date" />
+                                android:text="Date"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp"/>
 
-                            <ImageView
-                                android:id="@+id/image3"
+                            <TextView
+                                android:id="@+id/summary3"
                                 style="@style/HourlyElements"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                app:srcCompat="@drawable/ic_home" />
+                                android:gravity="center"
+                                android:text="summary" />
+
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/summary3"
-                            style="@style/HourlyElements"
-                            android:layout_width="90dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="summary" />
-
                         <LinearLayout
-                            android:layout_width="25dp"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -432,8 +442,16 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
+                        <ImageView
+                            android:id="@+id/image4"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
+
                         <LinearLayout
-                            android:layout_width="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -444,27 +462,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Date" />
+                                android:text="Date"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp"/>
 
-                            <ImageView
-                                android:id="@+id/image4"
+                            <TextView
+                                android:id="@+id/summary4"
                                 style="@style/HourlyElements"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                app:srcCompat="@drawable/ic_home" />
+                                android:gravity="center"
+                                android:text="summary" />
+
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/summary4"
-                            style="@style/HourlyElements"
-                            android:layout_width="90dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="summary" />
-
                         <LinearLayout
-                            android:layout_width="25dp"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -519,8 +532,16 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
+                        <ImageView
+                            android:id="@+id/image5"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
+
                         <LinearLayout
-                            android:layout_width="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -531,27 +552,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Date" />
+                                android:text="Date"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp"/>
 
-                            <ImageView
-                                android:id="@+id/image5"
+                            <TextView
+                                android:id="@+id/summary5"
                                 style="@style/HourlyElements"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                app:srcCompat="@drawable/ic_home" />
+                                android:gravity="center"
+                                android:text="summary" />
+
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/summary5"
-                            style="@style/HourlyElements"
-                            android:layout_width="90dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="summary" />
-
                         <LinearLayout
-                            android:layout_width="25dp"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -604,8 +620,16 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
+                        <ImageView
+                            android:id="@+id/image6"
+                            style="@style/HourlyElements"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_home" />
+
                         <LinearLayout
-                            android:layout_width="20dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -616,27 +640,22 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Date" />
+                                android:text="Date"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                android:textSize="20sp" />
 
-                            <ImageView
-                                android:id="@+id/image6"
+                            <TextView
+                                android:id="@+id/summary6"
                                 style="@style/HourlyElements"
-                                android:layout_width="match_parent"
+                                android:layout_width="200dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                app:srcCompat="@drawable/ic_home" />
+                                android:gravity="center"
+                                android:text="summary" />
+
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/summary6"
-                            style="@style/HourlyElements"
-                            android:layout_width="90dp"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="summary" />
-
                         <LinearLayout
-                            android:layout_width="25dp"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"

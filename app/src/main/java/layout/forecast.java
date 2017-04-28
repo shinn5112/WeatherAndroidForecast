@@ -149,8 +149,9 @@ public class forecast extends Fragment{
             }
 
             // text setting
-            currentRow[0].setText(day);
-            currentRow[1].setText(currentDay + ":\n" + currentData.getSummary());
+            currentRow[0].setText(currentDay + ", " +day + ":");
+            currentRow[0].setTextColor(ContextCompat.getColor(getActivity(), R.color.darkBlue));
+            currentRow[1].setText(currentData.getSummary());
             currentRow[2].setText(highLow);
             currentRow[3].setText(hourPrecip);
             dailyImages[i-1].getLayoutParams().height = 125;
@@ -160,7 +161,6 @@ public class forecast extends Fragment{
 
             //color changes as if needed
             if (icon.contains("rain") || icon.contains("night") || icon.equals("cloudy")){
-                currentRow[0].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
                 currentRow[1].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
                 currentRow[2].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
                 currentRow[3].setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
