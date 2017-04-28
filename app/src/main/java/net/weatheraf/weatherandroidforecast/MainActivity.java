@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             e.getMessage();
         }
+        getWeatherData(null);
         //// TODO: 4/20/17 remove debug
     }
 

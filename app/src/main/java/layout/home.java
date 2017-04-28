@@ -164,14 +164,14 @@ public class home extends Fragment{
         else direction = "";
 
         String unit;
-        if (sharedPreferences.getBoolean("metric", false)) unit = "m/h";
+        if (sharedPreferences.getBoolean("metric", false)) unit = "km/h";
         else unit = "mi/h";
 
         temp = df.format(weatherData.getCurrently().getWindSpeed()) + " " + unit + " " + direction + "\nWind";
         wind.setText(temp);
 
-        if (sharedPreferences.getBoolean("metric", false)) unit = "km/h";
-        else unit = "mi/h";
+        if (sharedPreferences.getBoolean("metric", false)) unit = "km";
+        else unit = "mi";
 
         temp = df.format(weatherData.getCurrently().getVisibility()) + " " + unit + " \nVisibility";
         visibility.setText(temp);
