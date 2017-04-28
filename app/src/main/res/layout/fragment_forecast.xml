@@ -37,12 +37,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="16dp"
-                android:text="Daily Forecast"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toRightOf="@+id/view2"
+                android:text="7 Day Forecast"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 app:layout_constraintHorizontal_bias="0.0"
-                android:layout_marginEnd="8dp" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textSize="20sp"/>
 
             <View
                 android:id="@+id/view2"
