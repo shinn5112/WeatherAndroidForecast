@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean metric = false;
     private View header;
     private TextView updateTime;
+    private Location location;
 
     LocationManager locationManager;
 
@@ -108,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         try {
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
             if (addresses.size() > 0) {
-                getSupportActionBar().setTitle(addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea());
+                if (addresses.get(0).getAdminArea() != null) getSupportActionBar().setTitle(addresses.get(0).getLocality() + ", " + addresses.get(0).getAdminArea());
+                else getSupportActionBar().setTitle(addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName());
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -271,13 +273,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                Location location;
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
                     location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 }
                 else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, this);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, this);
                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 }
                 else{
@@ -286,11 +287,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     prefsEditor.apply();
                     return; //so last statements aren't reached
                 }
-
-                SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
-                prefsEditor.putFloat("latitude", (float) location.getLatitude());
-                prefsEditor.putFloat("longitude", (float) location.getLongitude());
-                prefsEditor.apply();
+                if (location != null) {
+                    SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+                    prefsEditor.putFloat("latitude", (float) location.getLatitude());
+                    prefsEditor.putFloat("longitude", (float) location.getLongitude());
+                    prefsEditor.apply();
+                }
             }
         }
     }
@@ -308,6 +310,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onLocationChanged(Location location) {
+        if (this.location == null) this.location = location;
+        SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
+        prefsEditor.putFloat("latitude", (float) location.getLatitude());
+        prefsEditor.putFloat("longitude", (float) location.getLongitude());
+        prefsEditor.apply();
 
     }
 
