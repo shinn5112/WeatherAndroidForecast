@@ -19,7 +19,13 @@ import net.weatheraf.weatherandroidforecast.R;
 
 import org.json.JSONException;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import WeatherAPI.DailyDataPoint;
 import WeatherAPI.DataPoint;
@@ -126,9 +132,25 @@ public class forecast extends Fragment{
             int precipResID = getResources().getIdentifier(precipIcon , "drawable", getActivity().getPackageName());
             String highLow = df.format(currentData.getTemperatureMax()) + "\u00b0/" + df.format(currentData.getTemperatureMin()) + "\u00b0";
 
+            // getting the day of the week
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MMM-dd", Locale.US);
+            String currentDate = date[2]+ "-" + date[0] + "-" + date[1];
+            String currentDay = "";
+            try{ // get day of week
+                String[] days = new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+                Date date1 = dateFormat.parse(currentDate);
+                final Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date1);
+                int dayNumber = calendar.get(calendar.DAY_OF_WEEK);
+                currentDay = days[dayNumber - 1];
+            }catch (Exception e){
+                System.out.println("DATE FAILED");
+                e.printStackTrace();
+            }
+
             // text setting
             currentRow[0].setText(day);
-            currentRow[1].setText(currentData.getSummary());
+            currentRow[1].setText(currentDay + ":\n" + currentData.getSummary());
             currentRow[2].setText(highLow);
             currentRow[3].setText(hourPrecip);
             dailyImages[i-1].getLayoutParams().height = 125;
