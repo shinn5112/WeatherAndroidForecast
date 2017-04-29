@@ -84,41 +84,39 @@ public class astronomical extends Fragment{
 
         //Modified to accommodate larger sets for given perception of moon
         //on a given night. Went two above and below quarterly values.
-
-        phase = 0.75;
         if(phase <= 0.01){
             moonPhase.setText("New Moon ");
-            moonImg.setImageResource(R.drawable.ic_new_moon);
+            moonImg.setImageResource(R.drawable.moon_new);
         }
         else if(phase <= 0.22){
             moonPhase.setText("Waxing Cresent ");
-            moonImg.setImageResource(R.drawable.ic_moon_waxing_cresent);
+            moonImg.setImageResource(R.drawable.moon_cresent);
         }
         else if(phase <= 0.27){
             moonPhase.setText("First Quarter ");
-            moonImg.setImageResource(R.drawable.ic_moon_quarter);
+            moonImg.setImageResource(R.drawable.moon_quarter);
         }
         else if(phase <= 0.47){
             moonPhase.setText("Waxing Gibbous ");
-            moonImg.setImageResource(R.drawable.ic_moon_waxing_gibbous);
+            moonImg.setImageResource(R.drawable.moon_gibbous);
         }
         else if(phase <= 0.52){
             moonPhase.setText("Full Moon ");
-            moonImg.setImageResource(R.drawable.ic_moon_full);
+            moonImg.setImageResource(R.drawable.moon_full);
         }
         else if(phase <= 0.72){
             moonPhase.setText("Wanning Gibbous ");
-            moonImg.setImageResource(R.drawable.ic_moon_waxing_gibbous);
+            moonImg.setImageResource(R.drawable.moon_gibbous);
             moonImg.setRotation(180.0f);
         }
         else if(phase <= 0.77){
             moonPhase.setText("Last Quarter");
-            moonImg.setImageResource(R.drawable.ic_moon_quarter);
+            moonImg.setImageResource(R.drawable.moon_quarter);
             moonImg.setRotation(180.0f);
         }
         else{
             moonPhase.setText("Wanning Cresent " + phase);
-            moonImg.setImageResource(R.drawable.ic_moon_waxing_cresent);
+            moonImg.setImageResource(R.drawable.moon_cresent);
             moonImg.setRotation(180.0f);
         }
 
