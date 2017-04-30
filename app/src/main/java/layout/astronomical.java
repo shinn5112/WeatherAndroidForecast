@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -84,41 +85,45 @@ public class astronomical extends Fragment{
 
         //Modified to accommodate larger sets for given perception of moon
         //on a given night. Went two above and below quarterly values.
+        String moon = "Moon Phase: ";
+        moonImg.setColorFilter(Color.argb(255, 255, 255, 255)); // Set color of moon images, white
         if(phase <= 0.01){
-            moonPhase.setText("New Moon ");
+            moon += "New Moon";
             moonImg.setImageResource(R.drawable.moon_new);
         }
         else if(phase <= 0.22){
-            moonPhase.setText("Waxing Cresent ");
+            moon += "Waxing Crescent";
             moonImg.setImageResource(R.drawable.moon_cresent);
         }
         else if(phase <= 0.27){
-            moonPhase.setText("First Quarter ");
+            moon += "First Quarter";
             moonImg.setImageResource(R.drawable.moon_quarter);
         }
         else if(phase <= 0.47){
-            moonPhase.setText("Waxing Gibbous ");
+            moon += "Waxing Gibbous";
             moonImg.setImageResource(R.drawable.moon_gibbous);
         }
         else if(phase <= 0.52){
-            moonPhase.setText("Full Moon ");
+            moon += "Full Moon";
             moonImg.setImageResource(R.drawable.moon_full);
         }
         else if(phase <= 0.72){
-            moonPhase.setText("Wanning Gibbous ");
+            moon += "Waning Gibbous";
             moonImg.setImageResource(R.drawable.moon_gibbous);
             moonImg.setRotation(180.0f);
         }
         else if(phase <= 0.77){
-            moonPhase.setText("Last Quarter");
+            moon += "Last Quarter";
             moonImg.setImageResource(R.drawable.moon_quarter);
             moonImg.setRotation(180.0f);
         }
         else{
-            moonPhase.setText("Wanning Cresent " + phase);
+            moon += "Waning Crescent " + phase;
             moonImg.setImageResource(R.drawable.moon_cresent);
             moonImg.setRotation(180.0f);
         }
+
+        moonPhase.setText(moon);
 
         int sunPosition = sunPosition();
 
