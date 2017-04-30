@@ -78,8 +78,9 @@ public class astronomical extends Fragment{
 
         dateView.setText(sunRise[0] + " " + sunRise[1] + " " + sunRise[2]);
 
-        riseTime.setText(sunRise[3] + " " + sunRise[4]);
-        setTime.setText(sunSet[3] + " " + sunSet[4]);
+        //TODO moon rise and set
+        riseTime.setText(sunRise[3].substring(0, sunRise[3].length() - 3) + " " + sunRise[4]);
+        setTime.setText(sunSet[3].substring(0, sunSet[3].length() - 3) + " " + sunSet[4]);
 
         Double phase = ddp.getMoonPhase();
 
