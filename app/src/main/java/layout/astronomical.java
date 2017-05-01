@@ -87,10 +87,16 @@ public class astronomical extends Fragment{
         String currentTime = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
         String[] hour = sunSet[3].split(":");
         int hr = Integer.valueOf(hour[0]) + 12;
-        String newHour = hr + ":" + hour[1];
+        String sunSetHr = hr + ":" + hour[1];
+
+        DailyDataPoint ddp2 = weatherData.getDaily().getDay(1);
+        String[] newSunRise = ddp2.getSunriseTime().split(" ");
+        hour = newSunRise[3].split(":");
+        hr = Integer.valueOf(hour[0]);
+        String sunRiseHr = hr + ":" + hour[1];
 
         boolean night;
-        if (currentTime.compareTo(newHour) < 0) { //day
+        if (currentTime.compareTo(sunSetHr) < 0 || currentTime.compareTo(sunRiseHr) > 0) { //day
             riseTime.setText(sunRise[3].substring(0, sunRise[3].length() - 3) + " " + sunRise[4]);
             setTime.setText(sunSet[3].substring(0, sunSet[3].length() - 3) + " " + sunSet[4]);
             sunImg.setImageResource(R.drawable.ic_wb_sunny_black_30dp);
@@ -99,7 +105,6 @@ public class astronomical extends Fragment{
         else { //night
             riseTime.setText(sunSet[3].substring(0, sunSet[3].length() - 3) + " " + sunSet[4]); //moon rise is sunset time from day
 
-            DailyDataPoint ddp2 = weatherData.getDaily().getDay(1);
             String moonSet[] = ddp2.getSunriseTime().split(" ");
             setTime.setText(moonSet[3].substring(0, moonSet[3].length() - 3) + " " + moonSet[4]); //moon set time is sun rise time from next day
 
