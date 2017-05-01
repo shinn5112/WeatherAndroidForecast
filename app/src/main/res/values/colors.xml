@@ -7,4 +7,5 @@
     <color name="Hourly">#98bcbcba</color>
     <color name="dividerColor">#c0c0c0</color>
     <color name="rain">#ffffff</color>
+    <color name="pbar">#c8ff0000</color>
 </resources>

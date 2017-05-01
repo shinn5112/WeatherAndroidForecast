@@ -5,9 +5,11 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import org.json.JSONException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Locale;
 
 import WeatherAPI.DailyDataPoint;
 import WeatherAPI.WeatherData;
@@ -34,13 +37,10 @@ import static java.lang.Math.ceil;
  */
 public class astronomical extends Fragment{
 
-    private TextView dateView;
-    private TextView setTime;
-    private TextView riseTime;
-    private TextView moonPhase;
+    private TextView dateView, setTime, riseTime, moonPhase;
     private WeatherData weatherData;
     private ProgressBar pBar;
-    private ImageView moonImg, sunImg;
+    private ImageView moonImg, sunImg, AstronomyBackground;
 
     public astronomical() {
         // Required empty public constructor
@@ -61,6 +61,9 @@ public class astronomical extends Fragment{
         pBar = (ProgressBar) view.findViewById(R.id.circular_progress_bar);
         moonImg = (ImageView) view.findViewById(R.id.moonImg);
         sunImg = (ImageView) view.findViewById(R.id.sunImg);
+        sunImg.getLayoutParams().width = 200;
+        sunImg.getLayoutParams().width = 200;
+        AstronomyBackground = (ImageView) view.findViewById(R.id.AstronomyBackground);
 
         try {
             weatherData = new WeatherData(sharedPreferences.getString("weatherData", ""));
@@ -81,7 +84,7 @@ public class astronomical extends Fragment{
         dateView.setText(sunRise[0] + " " + sunRise[1] + " " + sunRise[2]);
 
         //TODO moon rise and set
-        String currentTime = new SimpleDateFormat("HH:mm").format(new Date());
+        String currentTime = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
         String[] hour = sunSet[3].split(":");
         int hr = Integer.valueOf(hour[0]) + 12;
         String newHour = hr + ":" + hour[1];
@@ -102,7 +105,12 @@ public class astronomical extends Fragment{
             DailyDataPoint ddp2 = weatherData.getDaily().getDay(1);
             String moonSet[] = ddp2.getSunriseTime().split(" ");
             setTime.setText(moonSet[3].substring(0, moonSet[3].length() - 3) + " " + moonSet[4]); //sun rise time from next day
-
+            AstronomyBackground.setImageResource(R.drawable.back_clear_night);
+            pBar.getProgressDrawable().setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
+            dateView.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            setTime.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            riseTime.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            moonPhase.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             night = true;
         }
 
@@ -111,9 +119,6 @@ public class astronomical extends Fragment{
         //Modified to accommodate larger sets for given perception of moon
         //on a given night. Went two above and below quarterly values.
         String moon = "Moon Phase: ";
-        moonImg.setColorFilter(Color.argb(255, 255, 255, 255)); // Set color of moon images, white
-        if (night) sunImg.setColorFilter(Color.argb(255, 255, 255, 255)); //TODO PROPER MOON COLOR
-        //else sunImg.setColorFilter(); //TODO set back to yellow
         if(phase <= 0.01){
             moon += "New Moon";
             moonImg.setImageResource(R.drawable.moon_new);
