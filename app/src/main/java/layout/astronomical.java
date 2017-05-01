@@ -83,28 +83,26 @@ public class astronomical extends Fragment{
 
         dateView.setText(sunRise[0] + " " + sunRise[1] + " " + sunRise[2]);
 
-        //TODO moon rise and set
+        //to see if it is day or night //TODO fix time comparison find date comparitor
         String currentTime = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
         String[] hour = sunSet[3].split(":");
         int hr = Integer.valueOf(hour[0]) + 12;
         String newHour = hr + ":" + hour[1];
-        System.out.println(currentTime.compareTo(newHour));
 
         boolean night;
         if (currentTime.compareTo(newHour) < 0) { //day
             riseTime.setText(sunRise[3].substring(0, sunRise[3].length() - 3) + " " + sunRise[4]);
             setTime.setText(sunSet[3].substring(0, sunSet[3].length() - 3) + " " + sunSet[4]);
-
             sunImg.setImageResource(R.drawable.ic_wb_sunny_black_30dp);
-
             night = false;
         }
         else { //night
-            riseTime.setText(sunSet[3].substring(0, sunSet[3].length() - 3) + " " + sunSet[4]); //sunset time from day
+            riseTime.setText(sunSet[3].substring(0, sunSet[3].length() - 3) + " " + sunSet[4]); //moon rise is sunset time from day
 
             DailyDataPoint ddp2 = weatherData.getDaily().getDay(1);
             String moonSet[] = ddp2.getSunriseTime().split(" ");
-            setTime.setText(moonSet[3].substring(0, moonSet[3].length() - 3) + " " + moonSet[4]); //sun rise time from next day
+            setTime.setText(moonSet[3].substring(0, moonSet[3].length() - 3) + " " + moonSet[4]); //moon set time is sun rise time from next day
+
             AstronomyBackground.setImageResource(R.drawable.back_clear_night);
             pBar.getProgressDrawable().setColorFilter(Color.WHITE, android.graphics.PorterDuff.Mode.SRC_IN);
             dateView.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
@@ -119,59 +117,52 @@ public class astronomical extends Fragment{
         //Modified to accommodate larger sets for given perception of moon
         //on a given night. Went two above and below quarterly values.
         String moon = "Moon Phase: ";
+        String moonIcon;
         if(phase <= 0.01){
             moon += "New Moon";
-            moonImg.setImageResource(R.drawable.moon_new);
-            if (night) sunImg.setImageResource(R.drawable.moon_new);
+            moonIcon = "moon_new";
         }
         else if(phase <= 0.22){
             moon += "Waxing Crescent";
-            moonImg.setImageResource(R.drawable.moon_cresent);
-            if (night) sunImg.setImageResource(R.drawable.moon_cresent);
+            moonIcon = "moon_cresent";
         }
         else if(phase <= 0.27){
             moon += "First Quarter";
-            moonImg.setImageResource(R.drawable.moon_quarter);
-            if (night) sunImg.setImageResource(R.drawable.moon_quarter);
+            moonIcon = "moon_quarter";
         }
         else if(phase <= 0.47){
             moon += "Waxing Gibbous";
-            moonImg.setImageResource(R.drawable.moon_gibbous);
-            if (night) sunImg.setImageResource(R.drawable.moon_gibbous);
+            moonIcon = "moon_gibbous";
         }
         else if(phase <= 0.52){
             moon += "Full Moon";
-            moonImg.setImageResource(R.drawable.moon_full);
-            if (night) sunImg.setImageResource(R.drawable.moon_full);
+            moonIcon = "moon_full";
         }
         else if(phase <= 0.72){
             moon += "Waning Gibbous";
-            moonImg.setImageResource(R.drawable.moon_gibbous);
+            moonIcon = "moon_gibbous";
             moonImg.setRotation(180.0f);
-            if (night) {
-                sunImg.setImageResource(R.drawable.moon_gibbous);
-                sunImg.setRotation(180.0f);
-            }
+            if (night) sunImg.setRotation(180.0f);
         }
         else if(phase <= 0.77){
             moon += "Last Quarter";
-            moonImg.setImageResource(R.drawable.moon_quarter);
+            moonIcon = "moon_quarter";
             moonImg.setRotation(180.0f);
-            if (night) {
-                sunImg.setImageResource(R.drawable.moon_quarter);
-                sunImg.setRotation(180.0f);
-            }
+            if (night) sunImg.setRotation(180.0f);
         }
         else{
             moon += "Waning Crescent " + phase;
-            moonImg.setImageResource(R.drawable.moon_cresent);
+            moonIcon = "moon_cresent";
             moonImg.setRotation(180.0f);
-            if (night) {
-                sunImg.setImageResource(R.drawable.moon_cresent);
-                moonImg.setRotation(180.0f);
-            }
+            if (night) moonImg.setRotation(180.0f);
         }
 
+        int moonResID = getResources().getIdentifier(moonIcon , "drawable", getActivity().getPackageName());
+        moonImg.setImageResource(moonResID);
+        if (night) {
+            sunImg.setImageResource(moonResID);
+            System.out.println("RUN MOON 2");
+        }
         moonPhase.setText(moon);
 
         int sunPosition = sunPosition();
