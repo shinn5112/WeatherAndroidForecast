@@ -54,15 +54,18 @@ public class weatherService  extends IntentService {
     private static int currentID;
     private static int hour1ID;
     private static int hour2ID;
+    private static int notificationClickId = (int) System.currentTimeMillis();
 
 
     public weatherService() {
         super(weatherService.class.getSimpleName());
     }
 
+
     public static Intent createIntentStartNotificationService(Context context) {
         Intent intent = new Intent(context, weatherService.class);
         intent.setAction(ACTION_START);
+        Log.d("startThisIntent", "updated");
         return intent;
     }
 
@@ -131,15 +134,20 @@ public class weatherService  extends IntentService {
         Log.d(getClass().getSimpleName(), "onHandleIntent, started handling a notification event");
         try {
             String action = intent.getAction();
-            if (ACTION_START.equals(action)) {
-                processStartNotification();
-            }
-            if (ACTION_DELETE.equals(action)) {
-                processDeleteNotification(intent);
-            }
+            Log.d("intent", action);
+                if (ACTION_START.equals(action)) {
+                    processStartNotification();
+                }
+                if (ACTION_DELETE.equals(action)) {
+                    processDeleteNotification(intent);
+                }
+                if (ACTION_START.equals("refreshed")) {
+                    showNotificationWeather();
+                }
         } finally {
             WakefulBroadcastReceiver.completeWakefulIntent(intent);
         }
+
     }
 
     private void processDeleteNotification(Intent intent) {
@@ -183,13 +191,14 @@ public class weatherService  extends IntentService {
     }
 
     private void showNotificationWeather(){
+        Log.d("WeatherNote", "updating");
         remoteView = new RemoteViews(getPackageName(), R.layout.notification_view);
         remoteView.setTextViewText(R.id.current, currentTime);
         remoteView.setTextViewText(R.id.hour1, hour1Time);
         remoteView.setTextViewText(R.id.hour2, hour2Time);
         remoteView.setTextViewText(R.id.degCurrent, Double.toString(degCurrentValue) + "\u00b0");
         remoteView.setTextViewText(R.id.degHour1, Double.toString(degHour1Value)+ "\u00b0");
-        remoteView.setTextViewText(R.id.degHour2, Double.toString(degHour1Value)+ "\u00b0");
+        remoteView.setTextViewText(R.id.degHour2, Double.toString(degHour2Value)+ "\u00b0");
         remoteView.setTextViewText(R.id.precipCurrent, Double.toString(precipCurrentValue) + "%");
         remoteView.setTextViewText(R.id.precipHour1, Double.toString(precipHour1Value) + "%");
         remoteView.setTextViewText(R.id.precipHour2, Double.toString(precipHour2Value)+ "%");
@@ -200,7 +209,6 @@ public class weatherService  extends IntentService {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         builder.setContentTitle("Android Weather Forecast")
                 .setCustomBigContentView(remoteView)
-                .setAutoCancel(true)
                 .setSmallIcon(R.mipmap.ic_launcher);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 NOTIFICATION_ID_2,
@@ -209,6 +217,13 @@ public class weatherService  extends IntentService {
         builder.setContentIntent(pendingIntent);
         builder.setDeleteIntent(weatherAlarmReceiver.getDeleteIntent(this));
         builder.setOngoing(true);
+
+        notificationClickId = (int) System.currentTimeMillis();
+        Intent button_intent = new Intent("refreshed");
+        button_intent.putExtra("id", notificationClickId);
+
+        PendingIntent pButton_intent = PendingIntent.getBroadcast(this, 100, button_intent,0);
+        remoteView.setOnClickPendingIntent(R.id.refresh, pButton_intent);
 
         final NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(NOTIFICATION_ID_2, builder.build());

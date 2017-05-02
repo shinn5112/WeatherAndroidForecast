@@ -38,6 +38,11 @@
                 <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
         </receiver>
+        <receiver android:name="layout.button_listener">
+            <intent-filter>
+                <action android:name="refreshed"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
