@@ -1,9 +1,12 @@
 package net.weatheraf.weatherandroidforecast;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
@@ -19,6 +22,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +46,8 @@ import layout.astronomical;
 import layout.forecast;
 import layout.home;
 import layout.settings;
+import layout.weatherAlarmReceiver;
+import layout.weatherService;
 import pub.devrel.easypermissions.EasyPermissions;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -87,7 +93,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (sharedPreferences.getFloat("latitude", 0) == 0 || sharedPreferences.getFloat("longitude", 0) == 0) getWeatherData(new settings());
         else getWeatherData(new home());
 
+        boolean alarmUp = (PendingIntent.getBroadcast(this, 1,
+                new Intent(this, MainActivity.class),
+                PendingIntent.FLAG_NO_CREATE) != null);
+
+        if (alarmUp)
+        {
+            Log.d("myTag", "Alarm is already active");
+        }
+        else{
+            Log.d("myTag", "Alarm is not active");
+        }
+        if(!isMyServiceRunning(weatherService.class)) {
+            weatherAlarmReceiver.setupAlarm(getApplication());
+            Log.i(getClass().getSimpleName(), "Service not already running. starting now");
+        }
+        else{
+            Log.i(getClass().getSimpleName(), "Service already running");
+        }
+
+
+
     }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        // handleIntent();
+    }
+
 
     public void getWeatherData(final Fragment fragment){
         // setting up the API
