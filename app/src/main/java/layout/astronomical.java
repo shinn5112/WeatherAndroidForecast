@@ -132,33 +132,33 @@ public class astronomical extends Fragment{
         //on a given night. Went two above and below quarterly values.
         String moon = "Moon Phase: ";
         String moonIcon;
-        if(phase <= 0.01){
+        if(phase == 0.00){
             moon += "New Moon";
             moonIcon = "moon_new";
         }
-        else if(phase <= 0.22){
+        else if(phase <= 0.24){
             moon += "Waxing Crescent";
             moonIcon = "moon_cresent";
         }
-        else if(phase <= 0.27){
+        else if(phase == 0.25){
             moon += "First Quarter";
             moonIcon = "moon_quarter";
         }
-        else if(phase <= 0.47){
+        else if(phase <= 0.49){
             moon += "Waxing Gibbous";
             moonIcon = "moon_gibbous";
         }
-        else if(phase <= 0.52){
+        else if(phase == 0.50){
             moon += "Full Moon";
             moonIcon = "moon_full";
         }
-        else if(phase <= 0.72){
+        else if(phase <= 0.74){
             moon += "Waning Gibbous";
             moonIcon = "moon_gibbous";
             moonImg.setRotation(180.0f);
             if (night) sunImg.setRotation(180.0f);
         }
-        else if(phase <= 0.77){
+        else if(phase == 0.75){
             moon += "Last Quarter";
             moonIcon = "moon_quarter";
             moonImg.setRotation(180.0f);
