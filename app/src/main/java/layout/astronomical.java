@@ -22,6 +22,8 @@ import net.weatheraf.weatherandroidforecast.R;
 
 import org.json.JSONException;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -83,23 +85,25 @@ public class astronomical extends Fragment{
 
         dateView.setText(sunRise[0] + " " + sunRise[1] + " " + sunRise[2]);
 
-        //to see if it is day or night //TODO fix time comparison find date comparitor
-        String currentTime = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
-        String[] hour = sunSet[3].split(":");
-        int hr = Integer.valueOf(hour[0]) + 12;
-        String sunSetHr = hr + ":" + hour[1];
-
         DailyDataPoint ddp2 = weatherData.getDaily().getDay(1);
-        String[] newSunRise = ddp2.getSunriseTime().split(" ");
-        hour = newSunRise[3].split(":");
-        hr = Integer.valueOf(hour[0]);
-        String sunRiseHr = hr + ":" + hour[1];
+
+        String sunsetTime = ddp.getSunsetTime();
+
+        System.out.println(sunsetTime);
+
+        long unixTime = 0;
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy h:mm:ss a", Locale.US);
+            Date date = dateFormat.parse(sunsetTime);
+             unixTime = date.getTime();
+        }catch (ParseException p){p.printStackTrace();}
 
         boolean night;
-        if (currentTime.compareTo(sunSetHr) < 0 || currentTime.compareTo(sunRiseHr) > 0) { //day
+        if (System.currentTimeMillis() < unixTime) { //day
             riseTime.setText(sunRise[3].substring(0, sunRise[3].length() - 3) + " " + sunRise[4]);
             setTime.setText(sunSet[3].substring(0, sunSet[3].length() - 3) + " " + sunSet[4]);
             sunImg.setImageResource(R.drawable.ic_wb_sunny_black_30dp);
+            System.out.println("DAY");
             night = false;
         }
         else { //night
@@ -114,6 +118,7 @@ public class astronomical extends Fragment{
             setTime.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             riseTime.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             moonPhase.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
+            System.out.println("NIGHT");
             night = true;
         }
 
@@ -164,10 +169,7 @@ public class astronomical extends Fragment{
 
         int moonResID = getResources().getIdentifier(moonIcon , "drawable", getActivity().getPackageName());
         moonImg.setImageResource(moonResID);
-        if (night) {
-            sunImg.setImageResource(moonResID);
-            System.out.println("RUN MOON 2");
-        }
+        if (night) sunImg.setImageResource(moonResID);
         moonPhase.setText(moon);
 
         int sunPosition = sunPosition();
