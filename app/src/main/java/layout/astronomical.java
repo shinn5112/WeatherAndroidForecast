@@ -26,6 +26,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -87,24 +88,28 @@ public class astronomical extends Fragment{
 
         DailyDataPoint ddp2 = weatherData.getDaily().getDay(1);
 
-        String sunsetTime = ddp.getSunsetTime();
+        String sunsetTime = ddp.getSunriseTime();
 
         System.out.println(sunsetTime);
 
-        long unixTime = 0;
-        try {
-            DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy h:mm:ss a", Locale.US);
-            Date date = dateFormat.parse(sunsetTime);
-             unixTime = date.getTime();
-        }catch (ParseException p){p.printStackTrace();}
+        int sunRiseHour = Integer.parseInt(sunRise[3].substring(0, sunRise[3].length() - 6));
+        int sunSetHour = Integer.parseInt(sunSet[3].substring(0, sunSet[3].length() - 6)) + 12;
 
-        boolean night;
-        if (System.currentTimeMillis() < unixTime) { //day
+
+        Boolean night;
+        Calendar cal = Calendar.getInstance();
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        if(hour < sunRiseHour || hour > sunSetHour){
+            night = true;
+        } else {
+            night = false;
+        }
+
+        if (!night) { //day
             riseTime.setText(sunRise[3].substring(0, sunRise[3].length() - 3) + " " + sunRise[4]);
             setTime.setText(sunSet[3].substring(0, sunSet[3].length() - 3) + " " + sunSet[4]);
             sunImg.setImageResource(R.drawable.ic_wb_sunny_black_30dp);
             System.out.println("DAY");
-            night = false;
         }
         else { //night
             riseTime.setText(sunSet[3].substring(0, sunSet[3].length() - 3) + " " + sunSet[4]); //moon rise is sunset time from day
@@ -119,7 +124,6 @@ public class astronomical extends Fragment{
             riseTime.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             moonPhase.setTextColor(ContextCompat.getColor(getActivity(), R.color.rain));
             System.out.println("NIGHT");
-            night = true;
         }
 
         Double phase = ddp.getMoonPhase();
@@ -232,7 +236,8 @@ public class astronomical extends Fragment{
         if(hr > setHR || hr <= riseHR) { //night moon risen percent
             System.out.println("RUN 224");
             double sunPos = hr - riseHR;
-            sunPos *= (24.0/(double)(riseHR - setHR));
+            if (sunPos < 0) sunPos = hr + (24 - riseHR); //after midnight
+            sunPos *= (24.0/(double)((24 - riseHR) + setHR));
             sunPos = ceil(sunPos);
             sunPosition = (int) sunPos;
             return sunPosition;
