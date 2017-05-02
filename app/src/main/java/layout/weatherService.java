@@ -24,6 +24,7 @@ import net.weatheraf.weatherandroidforecast.MainActivity;
 import net.weatheraf.weatherandroidforecast.R;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import WeatherAPI.WeatherData;
 
@@ -36,6 +37,7 @@ public class weatherService  extends IntentService {
 
     private static final int NOTIFICATION_ID = 1;
     private static final int NOTIFICATION_ID_2 = 2;
+    private static final int NOTIFICATION_ID_3 = 3;
     private static final String ACTION_START = "ACTION_START";
     private static final String ACTION_DELETE = "ACTION_DELETE";
     private static double precipProbability;
@@ -55,6 +57,7 @@ public class weatherService  extends IntentService {
     private static int hour1ID;
     private static int hour2ID;
     private static int notificationClickId = (int) System.currentTimeMillis();
+    private String alertString;
 
 
     public weatherService() {
@@ -117,6 +120,15 @@ public class weatherService  extends IntentService {
             Log.d("imageSuff", Integer.toString(hour2ID));
             precipIcon = "ic_" + weatherData.getHourly().getHour(0).getPrecipType();
             precipResID = getResources().getIdentifier(precipIcon , "drawable", getPackageName());
+            try {
+                JSONObject alert = new JSONObject(weatherData.getJson());
+                alertString = alert.getJSONObject("alerts").getString("description");
+
+            }
+            catch (Exception e){
+
+            }
+
 
 
 
@@ -161,7 +173,10 @@ public class weatherService  extends IntentService {
         String message = "";
         if (precipProbability > 90) {
             message = "It's highly likely to rain soon, grab an umbrella!";
-        } else if (precipProbability > 50) {
+        }
+        else if(precipProbability >60){
+            message = "It's probably going to rain soon, be prepared!";
+        } else if (precipProbability > 50 && precipProbability < 60) {
             message = "Grab a jacket just in case! 50/50 chance of rain soon";
         } else if (precipProbability > 10) {
             message = "Slight chance of rain soon, be prepared!";
@@ -188,6 +203,27 @@ public class weatherService  extends IntentService {
             final NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             manager.notify(NOTIFICATION_ID, builder.build());
         }
+        if(alertString != null){
+            final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+            builder.setContentTitle("Heads up!")
+                    .setAutoCancel(true)
+                    .setColor(getResources().getColor(R.color.colorAccent))
+                    .setContentText(message)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setLights(Color.BLUE, 3000, 3000)
+                    .setTicker("Weather Alert");
+
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                    NOTIFICATION_ID_3,
+                    new Intent(this, MainActivity.class),
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(pendingIntent);
+            builder.setDeleteIntent(weatherAlarmReceiver.getDeleteIntent(this));
+
+            final NotificationManager manager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.notify(NOTIFICATION_ID_3, builder.build());
+        }
     }
 
     private void showNotificationWeather(){
@@ -207,7 +243,7 @@ public class weatherService  extends IntentService {
         remoteView.setImageViewResource(R.id.imgHour2, hour2ID);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setContentTitle("Android Weather Forecast")
+        builder.setContentTitle("Weather Android Forecast")
                 .setCustomBigContentView(remoteView)
                 .setSmallIcon(R.mipmap.ic_launcher);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
